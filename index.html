@@ -13,83 +13,163 @@
     .app{max-width:500px;margin:0 auto;padding:16px;padding-bottom:80px}
     .header{text-align:center;background:linear-gradient(135deg,var(--primary),var(--primary2));margin:-16px -16px 16px;padding:24px 16px}
     .header h1{font-size:1.5rem;margin-bottom:4px}.header p{font-size:12px;opacity:.8}
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;justify-content:space-around;padding:6px 0;padding-bottom:max(6px,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.1);z-index:100}
-    .nav-item{display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:var(--text2);font-size:10px;background:none;border:none;cursor:pointer}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.1);z-index:100}
+    .nav-item{display:flex;flex-direction:column;align-items:center;padding:8px 12px;color:var(--text2);font-size:10px;background:none;border:none;cursor:pointer}
     .nav-item.active{color:var(--primary)}.nav-item span{font-size:20px;margin-bottom:2px}
     .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px}
-    .card-title{font-size:13px;color:var(--text2);margin-bottom:12px}
+    .card-title{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
     .card-highlight{background:linear-gradient(135deg,rgba(102,126,234,.15),rgba(118,75,162,.15));border:1px solid rgba(102,126,234,.3)}
     .balls{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
-    .ball{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff}
+    .ball{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
     .ball.sm{width:32px;height:32px;font-size:12px}.ball.xs{width:26px;height:26px;font-size:10px}
     .ball.b1{background:linear-gradient(135deg,#ffd700,#f0a500)}.ball.b2{background:linear-gradient(135deg,#4dabf7,#228be6)}
     .ball.b3{background:linear-gradient(135deg,#ff6b6b,#e03131)}.ball.b4{background:linear-gradient(135deg,#868e96,#495057)}
     .ball.b5{background:linear-gradient(135deg,#51cf66,#2f9e44)}.ball.bonus{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--primary)}
-    .plus{color:var(--text2);font-size:18px;margin:0 4px}
-    .round-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
-    .round-nav button{width:44px;height:44px;border-radius:50%;border:none;background:var(--card2);color:var(--text);font-size:18px;cursor:pointer}
-    .round-nav button:disabled{opacity:.3}.round-nav button:active:not(:disabled){background:var(--primary)}
-    .round-display{text-align:center;cursor:pointer}
-    .round-display .round-num{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .round-display .round-date{font-size:13px;color:var(--text2)}
-    .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
-    .modal-overlay.active{display:flex}
-    .modal{background:var(--card);border-radius:16px;padding:24px;width:90%;max-width:300px}
-    .modal h3{margin-bottom:16px;text-align:center}
-    .modal input{width:100%;padding:14px;border:none;border-radius:12px;background:var(--card2);color:var(--text);font-size:18px;text-align:center;margin-bottom:12px}
-    .modal-buttons{display:flex;gap:8px}.modal-buttons button{flex:1}
-    .prize-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px}
-    .prize-item{background:var(--card2);padding:12px;border-radius:12px}
-    .prize-item.main{grid-column:span 2;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,107,107,.15));border:1px solid rgba(255,215,0,.3);text-align:center}
-    .prize-label{font-size:11px;color:var(--text2);margin-bottom:4px}
-    .prize-value{font-size:18px;font-weight:700}.prize-value.highlight{color:var(--warning);font-size:24px}
-    .prize-sub{font-size:11px;color:var(--text2);margin-top:4px}.prize-detail{font-size:12px;color:var(--success);margin-top:4px}
-    .input,.select{width:100%;padding:14px;border:none;border-radius:12px;background:var(--card2);color:var(--text);font-size:16px}
-    .btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer}
-    .btn:active{transform:scale(.98)}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
-    .btn-success{background:linear-gradient(135deg,#51cf66,#2f9e44);color:#fff}
-    .btn-outline{background:transparent;border:1px solid var(--primary);color:var(--primary)}.btn-sm{padding:10px 16px;font-size:13px;width:auto}
-    .number-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-bottom:12px}
-    .number-btn{aspect-ratio:1;border:none;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer}
+    .ball.matched{box-shadow:0 0 0 3px var(--success)}.plus{color:var(--text2);font-size:16px;margin:0 4px}
+    
+    .accordion{border-radius:12px;overflow:hidden;background:var(--card2);margin-bottom:12px}
+    .accordion-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:13px}
+    .accordion-header:hover{background:rgba(255,255,255,.05)}
+    .accordion-icon{transition:transform .2s}
+    .accordion.open .accordion-icon{transform:rotate(180deg)}
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s}
+    .accordion.open .accordion-content{max-height:500px}
+    .accordion-inner{padding:0 16px 16px}
+    
+    .number-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+    .number-btn{aspect-ratio:1;border:none;border-radius:8px;font-weight:600;font-size:11px;cursor:pointer;transition:all .15s}
     .number-btn.b1{background:rgba(255,215,0,.2);color:#ffd700}.number-btn.b2{background:rgba(77,171,247,.2);color:#4dabf7}
     .number-btn.b3{background:rgba(255,107,107,.2);color:#ff6b6b}.number-btn.b4{background:rgba(134,142,150,.2);color:#868e96}
     .number-btn.b5{background:rgba(81,207,102,.2);color:#51cf66}
     .number-btn.selected{background:var(--primary)!important;color:#fff!important}
     .number-btn.excluded{background:var(--danger)!important;color:#fff!important}
     .number-btn.required{background:var(--success)!important;color:#fff!important}
-    .check-result{text-align:center;padding:20px;background:var(--card2);border-radius:12px;margin-top:12px}
-    .check-rank{font-size:36px;font-weight:800}
+    
+    .btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer}
+    .btn:active{transform:scale(.98)}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
+    .btn-success{background:linear-gradient(135deg,#51cf66,#2f9e44);color:#fff}
+    .btn-outline{background:transparent;border:1px solid var(--primary);color:var(--primary)}
+    .btn-sm{padding:10px 16px;font-size:13px;width:auto}
+    
+    .round-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px}
+    .round-nav button{width:44px;height:44px;border-radius:50%;border:none;background:var(--card2);color:var(--text);font-size:18px;cursor:pointer}
+    .round-nav button:disabled{opacity:.3}.round-nav button:active:not(:disabled){background:var(--primary)}
+    .round-display{text-align:center;cursor:pointer;min-width:120px}
+    .round-num{font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .round-date{font-size:12px;color:var(--text2)}
+    
+    .prize-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+    .prize-item{background:var(--card2);padding:10px;border-radius:10px;text-align:center}
+    .prize-item.main{grid-column:span 2;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,107,107,.15));border:1px solid rgba(255,215,0,.3)}
+    .prize-label{font-size:10px;color:var(--text2)}.prize-value{font-size:16px;font-weight:700}
+    .prize-value.highlight{color:var(--warning);font-size:20px}
+    .prize-sub{font-size:10px;color:var(--text2);margin-top:2px}
+    .prize-net{font-size:11px;color:var(--success);margin-top:2px}
+    
+    .check-result{text-align:center;padding:16px;background:var(--card2);border-radius:12px;margin:12px 0}
+    .check-rank{font-size:32px;font-weight:800}
     .check-rank.win{background:linear-gradient(135deg,var(--warning),#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .check-rank.lose{color:var(--text2)}.check-prize{font-size:20px;font-weight:700;margin:8px 0}
-    .stat-table{width:100%;border-collapse:collapse;font-size:12px}
-    .stat-table th,.stat-table td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--card2)}
-    .stat-table th{background:var(--card2);color:var(--text2);cursor:pointer;position:sticky;top:0}
-    .stat-table th:hover{background:var(--primary);color:#fff}.stat-table tr:hover{background:rgba(102,126,234,.1)}
+    .check-rank.lose{color:var(--text2)}
+    
+    .info-box{background:var(--card2);border-radius:10px;padding:12px;font-size:12px;line-height:1.6}
+    .info-box h4{color:var(--primary);margin-bottom:8px;font-size:13px}
+    .info-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .info-row:last-child{border:none}
+    
+    .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+    .modal-overlay.active{display:flex}
+    .modal{background:var(--card);border-radius:16px;padding:24px;width:90%;max-width:320px}
+    .modal h3{margin-bottom:16px;text-align:center;font-size:16px}
+    .modal input{width:100%;padding:14px;border:none;border-radius:12px;background:var(--card2);color:var(--text);font-size:18px;text-align:center;margin-bottom:12px}
+    .modal-buttons{display:flex;gap:8px}.modal-buttons button{flex:1}
+    
+    .tabs{display:flex;gap:6px;margin-bottom:16px}
+    .tab{flex:1;padding:10px;border-radius:10px;font-size:12px;background:var(--card2);color:var(--text2);border:none;cursor:pointer;text-align:center}
+    .tab.active{background:var(--primary);color:#fff}
+    
+    .stat-table{width:100%;border-collapse:collapse;font-size:11px}
+    .stat-table th,.stat-table td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--card2)}
+    .stat-table th{background:var(--card2);color:var(--text2);cursor:pointer;position:sticky;top:0;font-weight:500}
+    .stat-table th:hover{background:var(--primary);color:#fff}
+    .stat-table tr:hover{background:rgba(102,126,234,.1)}
+    .table-scroll{max-height:350px;overflow-y:auto;border-radius:8px}
+    
     .filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-    .filter-chip{padding:6px 12px;border-radius:16px;font-size:11px;background:var(--card2);color:var(--text2);border:none;cursor:pointer}
+    .filter-chip{padding:6px 10px;border-radius:14px;font-size:10px;background:var(--card2);color:var(--text2);border:none;cursor:pointer}
     .filter-chip.active{background:var(--primary);color:#fff}
+    
+    .help-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--card2);color:var(--text2);font-size:10px;cursor:pointer;margin-left:4px}
+    .help-icon:hover{background:var(--primary);color:#fff}
+    
+    .tooltip{position:relative}.tooltip-text{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--primary);padding:8px 12px;border-radius:8px;font-size:11px;white-space:nowrap;z-index:10}
+    .tooltip:hover .tooltip-text{display:block}
+    
+    .checkbox-group{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .checkbox-item{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card2);border-radius:8px;cursor:pointer;font-size:12px}
+    .checkbox-item input{display:none}
+    .checkbox-item.checked{background:var(--primary)}
+    .checkbox-box{width:16px;height:16px;border:2px solid var(--text2);border-radius:4px;display:flex;align-items:center;justify-content:center}
+    .checkbox-item.checked .checkbox-box{border-color:#fff;background:rgba(255,255,255,.2)}
+    .checkbox-item.checked .checkbox-box::after{content:'✓';color:#fff;font-size:10px}
+    
     .predict-result{background:linear-gradient(135deg,rgba(102,126,234,.1),rgba(118,75,162,.1));border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:12px;margin-bottom:8px}
-    .predict-index{font-size:11px;color:var(--primary);margin-bottom:6px}
+    .predict-index{font-size:11px;color:var(--primary);margin-bottom:8px}
+    
     .section{display:none}.section.active{display:block}
     .loading{text-align:center;padding:60px 20px}
     .spinner{width:40px;height:40px;border:4px solid var(--card2);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .alert{padding:12px;border-radius:10px;margin-bottom:12px;font-size:13px}.alert-danger{background:rgba(255,107,107,.2);color:var(--danger)}
-    .tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto}
-    .tab{padding:8px 14px;border-radius:20px;font-size:12px;white-space:nowrap;background:var(--card2);color:var(--text2);border:none;cursor:pointer}
-    .tab.active{background:var(--primary);color:#fff}
-    .selected-nums{display:flex;align-items:center;gap:8px;margin:12px 0;min-height:36px}
-    .selected-nums-label{font-size:12px;color:var(--text2)}
-    .clear-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--danger);background:transparent;color:var(--danger);font-size:11px;cursor:pointer}
-    .table-scroll{max-height:400px;overflow-y:auto}
+    
+    .alert{padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:12px}
+    .alert-danger{background:rgba(255,107,107,.2);color:var(--danger)}
+    .alert-success{background:rgba(81,207,102,.2);color:var(--success)}
+    
+    .selected-display{display:flex;align-items:center;gap:8px;min-height:32px}
+    .selected-label{font-size:11px;color:var(--text2)}
+    
+    .wheel-section{margin-top:16px;padding-top:16px;border-top:1px solid var(--card2)}
+    .wheel-info{font-size:11px;color:var(--text2);margin-bottom:8px}
+    .wheel-result{max-height:200px;overflow-y:auto}
+    .wheel-item{padding:8px;background:var(--card2);border-radius:8px;margin-bottom:4px;font-size:12px;text-align:center}
+    
+    .input{width:100%;padding:12px;border:none;border-radius:10px;background:var(--card2);color:var(--text);font-size:14px}
+    
+    .pair-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+    .pair-item{background:var(--card2);padding:8px;border-radius:8px;text-align:center;font-size:11px}
+    .pair-num{font-weight:700;color:var(--primary)}
   </style>
 </head>
 <body>
 <div class="app">
   <header class="header"><h1>🎱 로또 분석기</h1><p>당첨번호 조회 · 통계 분석 · AI 예측</p></header>
+  
   <div id="loading" class="loading"><div class="spinner"></div><p>데이터 불러오는 중...</p></div>
   
+  <!-- 홈 -->
   <div id="sec-home" class="section">
+    <!-- 내 번호 입력 아코디언 -->
+    <div class="accordion open" id="myNumAccordion">
+      <div class="accordion-header" onclick="toggleAccordion('myNumAccordion')">
+        <div>
+          <span>🎫 내 번호</span>
+          <span id="myNumDisplay" style="margin-left:8px"></span>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-inner">
+          <p style="font-size:11px;color:var(--text2);margin-bottom:10px">6개 번호를 선택하세요</p>
+          <div class="number-grid" id="checkGrid"></div>
+          <button class="btn btn-outline btn-sm" onclick="clearCheck()" style="margin-top:8px;width:auto">초기화</button>
+        </div>
+      </div>
+    </div>
+    
+    <button class="btn btn-success" onclick="checkMyNumbers()" style="margin-bottom:16px">🔍 당첨 확인</button>
+    
+    <div id="checkResult"></div>
+    
+    <!-- 회차 정보 -->
     <div class="card card-highlight">
       <div class="round-nav">
         <button onclick="prevRound()" id="prevBtn">◀</button>
@@ -99,284 +179,780 @@
         </div>
         <button onclick="nextRound()" id="nextBtn">▶</button>
       </div>
+      
       <div class="balls" id="currentBalls"></div>
+      
       <div class="prize-grid">
         <div class="prize-item main">
-          <div class="prize-label">🏆 1등 당첨금 (1인당)</div>
+          <div class="prize-label">🏆 1등 (1인당)</div>
           <div class="prize-value highlight" id="prize1">-</div>
-          <div class="prize-detail" id="prize1Net">실수령액: -</div>
+          <div class="prize-net" id="prize1Net">실수령: -</div>
           <div class="prize-sub" id="prize1Info">-</div>
         </div>
-        <div class="prize-item"><div class="prize-label">2등 (1인당)</div><div class="prize-value" id="prize2">-</div><div class="prize-sub" id="prize2Info">-</div></div>
-        <div class="prize-item"><div class="prize-label">3등 (1인당)</div><div class="prize-value" id="prize3">-</div><div class="prize-sub" id="prize3Info">-</div></div>
-        <div class="prize-item"><div class="prize-label">총 판매액</div><div class="prize-value" id="totalSales">-</div></div>
-        <div class="prize-item"><div class="prize-label">총 당첨자</div><div class="prize-value" id="totalWinners">-</div></div>
+        <div class="prize-item">
+          <div class="prize-label">2등</div>
+          <div class="prize-value" id="prize2">-</div>
+          <div class="prize-sub" id="prize2Info">-</div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-label">3등</div>
+          <div class="prize-value" id="prize3">-</div>
+          <div class="prize-sub" id="prize3Info">-</div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-label">총 판매액</div>
+          <div class="prize-value" id="totalSales">-</div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-label">총 당첨자</div>
+          <div class="prize-value" id="totalWinners">-</div>
+        </div>
       </div>
     </div>
+    
+    <!-- 당첨 조건 안내 -->
     <div class="card">
-      <div class="card-title">🎫 내 번호 당첨 확인</div>
-      <p style="font-size:12px;color:var(--text2);margin-bottom:12px;">번호 6개 선택 (현재 회차 기준)</p>
-      <div class="number-grid" id="checkGrid"></div>
-      <div class="selected-nums"><span class="selected-nums-label">선택:</span><div id="selectedBalls" style="display:flex;gap:4px;flex:1"></div><button class="clear-btn" onclick="clearCheck()">초기화</button></div>
-      <button class="btn btn-success" onclick="checkMyNumbers()">당첨 확인</button>
-      <div id="checkResult"></div>
-    </div>
-  </div>
-  
-  <div id="sec-stats" class="section">
-    <div class="tabs">
-      <button class="tab active" onclick="showStatTab('freq',this)">출현빈도</button>
-      <button class="tab" onclick="showStatTab('pattern',this)">패턴분석</button>
-      <button class="tab" onclick="showStatTab('zscore',this)">Z-Score</button>
-    </div>
-    <div id="stat-freq" class="stat-content">
-      <div class="card">
-        <div class="card-title">📊 번호별 통계</div>
-        <div class="filter-bar">
-          <button class="filter-chip active" onclick="filterTable('all',this)">전체</button>
-          <button class="filter-chip" onclick="filterTable('1-10',this)">1-10</button>
-          <button class="filter-chip" onclick="filterTable('11-20',this)">11-20</button>
-          <button class="filter-chip" onclick="filterTable('21-30',this)">21-30</button>
-          <button class="filter-chip" onclick="filterTable('31-40',this)">31-40</button>
-          <button class="filter-chip" onclick="filterTable('41-45',this)">41-45</button>
-          <button class="filter-chip" onclick="filterTable('hot',this)">🔥HOT</button>
-          <button class="filter-chip" onclick="filterTable('cold',this)">❄️COLD</button>
-        </div>
-        <div class="table-scroll"><table class="stat-table"><thead><tr>
-          <th onclick="sortTable('num')">번호</th><th onclick="sortTable('count')">출현</th>
-          <th onclick="sortTable('percent')">비율</th><th onclick="sortTable('last')">최근</th><th onclick="sortTable('avgGap')">평균간격</th>
-        </tr></thead><tbody id="freqTableBody"></tbody></table></div>
-      </div>
-    </div>
-    <div id="stat-pattern" class="stat-content" style="display:none">
-      <div class="card"><div class="card-title">⚖️ 홀짝 분포</div><table class="stat-table"><thead><tr><th>홀:짝</th><th>횟수</th><th>비율</th></tr></thead><tbody id="oddEvenBody"></tbody></table></div>
-      <div class="card"><div class="card-title">📏 고저 분포</div><table class="stat-table"><thead><tr><th>저:고</th><th>횟수</th><th>비율</th></tr></thead><tbody id="highLowBody"></tbody></table></div>
-      <div class="card"><div class="card-title">📈 기타 통계</div><div id="extraStats" style="font-size:13px;line-height:1.8"></div></div>
-    </div>
-    <div id="stat-zscore" class="stat-content" style="display:none">
-      <div class="card">
-        <div class="card-title">📐 Z-Score 분석</div>
-        <p style="font-size:11px;color:var(--text2);margin-bottom:12px;">|Z|>1.5: 주목할 번호</p>
-        <div class="filter-bar">
-          <button class="filter-chip active" onclick="filterZ('all',this)">전체</button>
-          <button class="filter-chip" onclick="filterZ('hot',this)">🔥Z>1.5</button>
-          <button class="filter-chip" onclick="filterZ('cold',this)">❄️Z<-1.5</button>
-        </div>
-        <div class="table-scroll"><table class="stat-table"><thead><tr>
-          <th onclick="sortZ('num')">번호</th><th onclick="sortZ('count')">출현</th><th onclick="sortZ('zscore')">Z-Score</th><th>상태</th>
-        </tr></thead><tbody id="zscoreBody"></tbody></table></div>
+      <div class="card-title">📋 당첨 조건</div>
+      <div class="info-box">
+        <div class="info-row"><span>🥇 1등</span><span>6개 번호 일치</span></div>
+        <div class="info-row"><span>🥈 2등</span><span>5개 + 보너스 일치</span></div>
+        <div class="info-row"><span>🥉 3등</span><span>5개 번호 일치</span></div>
+        <div class="info-row"><span>4등</span><span>4개 번호 일치 (고정 5만원)</span></div>
+        <div class="info-row"><span>5등</span><span>3개 번호 일치 (고정 5천원)</span></div>
       </div>
     </div>
   </div>
   
+  <!-- 예측 -->
   <div id="sec-predict" class="section">
     <div class="card">
-      <div class="card-title">⚙️ 예측 설정</div>
-      <div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">📊 전략</label>
-        <select id="predictStrategy" class="input">
-          <option value="balanced">균형 (빈도+미출현)</option><option value="hot">HOT</option><option value="cold">COLD</option>
-          <option value="pattern">패턴 (홀짝균형)</option><option value="zscore">Z-Score</option><option value="trend">트렌드</option><option value="random">랜덤</option>
-        </select>
+      <div class="card-title">⚙️ 예측 옵션 <span class="help-icon tooltip">?<span class="tooltip-text">체크한 조건들을 조합하여 예측합니다<br>체크 없으면 완전 랜덤</span></span></div>
+      
+      <div class="checkbox-group" id="optionGroup">
+        <label class="checkbox-item" onclick="toggleOption(this,'oddEven')">
+          <div class="checkbox-box"></div><span>홀짝 균형(3:3)</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'highLow')">
+          <div class="checkbox-box"></div><span>고저 균형(3:3)</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'sumRange')">
+          <div class="checkbox-box"></div><span>총합 100-175</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'hot')">
+          <div class="checkbox-box"></div><span>HOT 번호 포함</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'cold')">
+          <div class="checkbox-box"></div><span>COLD 번호 포함</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'noConsec')">
+          <div class="checkbox-box"></div><span>연속번호 제외</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'colorBalance')">
+          <div class="checkbox-box"></div><span>색상 균형</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'recentTrend')">
+          <div class="checkbox-box"></div><span>최근 트렌드</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'longAbsent')">
+          <div class="checkbox-box"></div><span>미출현 번호</span>
+        </label>
+        <label class="checkbox-item" onclick="toggleOption(this,'endNumBalance')">
+          <div class="checkbox-box"></div><span>끝수 분산</span>
+        </label>
       </div>
-      <div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">🚫 제외 번호</label><div class="number-grid" id="excludeGrid"></div></div>
-      <div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">⭐ 필수 번호 (최대5)</label><div class="number-grid" id="requireGrid"></div></div>
-      <div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">🔢 생성 개수</label>
-        <div style="display:flex;align-items:center;gap:12px"><button class="btn btn-outline btn-sm" onclick="adjustCount(-1)">−</button><span id="predictCount" style="font-size:20px;font-weight:700;min-width:40px;text-align:center">5</span><button class="btn btn-outline btn-sm" onclick="adjustCount(1)">+</button></div>
+      
+      <!-- 제외 번호 아코디언 -->
+      <div class="accordion" id="excludeAccordion">
+        <div class="accordion-header" onclick="toggleAccordion('excludeAccordion')">
+          <div>
+            <span>🚫 제외 번호</span>
+            <span id="excludeDisplay" style="margin-left:8px;color:var(--danger)"></span>
+          </div>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <div class="number-grid" id="excludeGrid"></div>
+          </div>
+        </div>
       </div>
+      
+      <!-- 필수 번호 아코디언 -->
+      <div class="accordion" id="requireAccordion">
+        <div class="accordion-header" onclick="toggleAccordion('requireAccordion')">
+          <div>
+            <span>⭐ 필수 번호 (최대5개)</span>
+            <span id="requireDisplay" style="margin-left:8px;color:var(--success)"></span>
+          </div>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <div class="number-grid" id="requireGrid"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0">
+        <span style="font-size:12px;color:var(--text2)">생성 개수:</span>
+        <button class="btn btn-outline btn-sm" onclick="adjustCount(-1)">−</button>
+        <span id="predictCount" style="font-size:18px;font-weight:700;min-width:30px;text-align:center">3</span>
+        <button class="btn btn-outline btn-sm" onclick="adjustCount(1)">+</button>
+      </div>
+      
       <button class="btn btn-primary" onclick="generatePrediction()">✨ 번호 생성</button>
     </div>
+    
     <div id="predictResults"></div>
+    
+    <!-- 축소 시스템 -->
+    <div class="card">
+      <div class="card-title">🎯 축소 시스템 <span class="help-icon tooltip">?<span class="tooltip-text">N개 번호 선택 → 가능한 6개 조합 생성<br>예: 8개 선택 → 28개 조합</span></span></div>
+      <div class="accordion" id="wheelAccordion">
+        <div class="accordion-header" onclick="toggleAccordion('wheelAccordion')">
+          <div>
+            <span>번호 선택</span>
+            <span id="wheelDisplay" style="margin-left:8px;color:var(--primary)"></span>
+          </div>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <div class="number-grid" id="wheelGrid"></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-outline" onclick="generateWheel()">조합 생성</button>
+      <div id="wheelResults" style="margin-top:12px"></div>
+    </div>
   </div>
   
+  <!-- 통계 -->
+  <div id="sec-stats" class="section">
+    <div class="tabs">
+      <button class="tab active" onclick="showStatTab('number',this)">번호별</button>
+      <button class="tab" onclick="showStatTab('round',this)">회차별</button>
+    </div>
+    
+    <!-- 번호별 통계 -->
+    <div id="stat-number" class="stat-content">
+      <div class="card">
+        <div class="card-title">📊 번호별 통계 
+          <span class="help-icon tooltip">?<span class="tooltip-text">HOT: Z>1.5 (평균보다 많이 출현)<br>COLD: Z<-1.5 (평균보다 적게 출현)<br>Z-Score = (출현-평균)/표준편차</span></span>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-chip active" onclick="filterNum('all',this)">전체</button>
+          <button class="filter-chip" onclick="filterNum('1-10',this)">1-10</button>
+          <button class="filter-chip" onclick="filterNum('11-20',this)">11-20</button>
+          <button class="filter-chip" onclick="filterNum('21-30',this)">21-30</button>
+          <button class="filter-chip" onclick="filterNum('31-40',this)">31-40</button>
+          <button class="filter-chip" onclick="filterNum('41-45',this)">41-45</button>
+          <button class="filter-chip" onclick="filterNum('hot',this)">🔥HOT</button>
+          <button class="filter-chip" onclick="filterNum('cold',this)">❄️COLD</button>
+        </div>
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr>
+              <th onclick="sortNum('num')">번호</th>
+              <th onclick="sortNum('count')">출현</th>
+              <th onclick="sortNum('percent')">비율</th>
+              <th onclick="sortNum('last')">미출현</th>
+              <th onclick="sortNum('zscore')">Z값</th>
+              <th>상태</th>
+            </tr></thead>
+            <tbody id="numTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">💑 궁합 번호 <span class="help-icon tooltip">?<span class="tooltip-text">특정 번호와 함께<br>자주 출현하는 번호</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+          <span style="font-size:12px;color:var(--text2)">번호 선택:</span>
+          <select id="pairSelect" class="input" style="width:80px;padding:8px" onchange="showPairNumbers()">
+            <option value="">-</option>
+          </select>
+        </div>
+        <div id="pairResult"></div>
+      </div>
+    </div>
+    
+    <!-- 회차별 통계 -->
+    <div id="stat-round" class="stat-content" style="display:none">
+      <div class="card">
+        <div class="card-title">⚖️ 홀짝 분포</div>
+        <div class="table-scroll" style="max-height:200px">
+          <table class="stat-table">
+            <thead><tr><th>홀:짝</th><th>횟수</th><th>비율</th></tr></thead>
+            <tbody id="oddEvenBody"></tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">📏 고저 분포 (1-22 vs 23-45)</div>
+        <div class="table-scroll" style="max-height:200px">
+          <table class="stat-table">
+            <thead><tr><th>저:고</th><th>횟수</th><th>비율</th></tr></thead>
+            <tbody id="highLowBody"></tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🔢 총합 통계</div>
+        <div id="sumStats" class="info-box"></div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🔗 연속번호 / AC값</div>
+        <div id="consecStats" class="info-box"></div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🔄 이월 번호 <span class="help-icon tooltip">?<span class="tooltip-text">이전 회차 번호 중<br>다음 회차에 다시 나온 개수</span></span></div>
+        <div id="carryStats" class="info-box"></div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🔚 끝수 분포 (0-9)</div>
+        <div class="table-scroll" style="max-height:200px">
+          <table class="stat-table">
+            <thead><tr><th>끝수</th><th>횟수</th><th>비율</th></tr></thead>
+            <tbody id="endNumBody"></tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">📐 번호 간격 분석</div>
+        <div id="gapStats" class="info-box"></div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🎨 색상(번호대) 분포</div>
+        <div class="table-scroll" style="max-height:200px">
+          <table class="stat-table">
+            <thead><tr><th>번호대</th><th>평균개수</th><th>비율</th></tr></thead>
+            <tbody id="colorBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 설정 -->
   <div id="sec-settings" class="section">
-    <div class="card"><div class="card-title">📊 데이터 현황</div><div id="dataStatus"></div></div>
-    <div class="card"><div class="card-title">🔄 관리</div><button class="btn btn-outline" onclick="location.reload()" style="margin-bottom:8px">🔄 새로고침</button><button class="btn btn-outline" onclick="exportData()">📤 내보내기</button></div>
-    <div class="card"><div class="card-title">ℹ️ 정보</div><p style="font-size:12px;color:var(--text2);line-height:1.6">⚠️ 로또는 무작위 추첨입니다. 통계는 참고용입니다.</p></div>
+    <div class="card">
+      <div class="card-title">📊 데이터 현황</div>
+      <div id="dataStatus" class="info-box"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔄 관리</div>
+      <button class="btn btn-outline" onclick="location.reload()" style="margin-bottom:8px">🔄 새로고침</button>
+      <button class="btn btn-outline" onclick="exportData()">📤 데이터 내보내기</button>
+    </div>
+    <div class="card">
+      <div class="card-title">ℹ️ 용어 설명</div>
+      <div class="info-box">
+        <div class="info-row"><span>Z-Score</span><span>(출현수-평균)/표준편차</span></div>
+        <div class="info-row"><span>HOT</span><span>Z > 1.5 (자주 출현)</span></div>
+        <div class="info-row"><span>COLD</span><span>Z < -1.5 (적게 출현)</span></div>
+        <div class="info-row"><span>AC값</span><span>번호간 차이의 종류 수 - 5</span></div>
+        <div class="info-row"><span>이월</span><span>이전회차 번호 재출현</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <p style="font-size:11px;color:var(--text2);line-height:1.6">⚠️ 로또는 완전한 무작위 추첨입니다. 모든 통계와 예측은 참고용이며 당첨을 보장하지 않습니다.</p>
+    </div>
   </div>
 </div>
 
+<!-- 회차 입력 모달 -->
 <div class="modal-overlay" id="roundModal">
-  <div class="modal"><h3>회차 입력</h3><input type="number" id="roundInput" placeholder="회차" inputmode="numeric">
-    <div class="modal-buttons"><button class="btn btn-outline" onclick="closeRoundModal()">취소</button><button class="btn btn-primary" onclick="goToRound()">이동</button></div>
+  <div class="modal">
+    <h3>회차 입력</h3>
+    <input type="number" id="roundInput" placeholder="회차 번호" inputmode="numeric">
+    <div class="modal-buttons">
+      <button class="btn btn-outline" onclick="closeRoundModal()">취소</button>
+      <button class="btn btn-primary" onclick="goToRound()">이동</button>
+    </div>
   </div>
 </div>
 
+<!-- 하단 네비게이션 -->
 <nav class="bottom-nav">
   <button class="nav-item active" onclick="showSection('home',this)"><span>🏠</span>홈</button>
-  <button class="nav-item" onclick="showSection('stats',this)"><span>📊</span>통계</button>
   <button class="nav-item" onclick="showSection('predict',this)"><span>🔮</span>예측</button>
+  <button class="nav-item" onclick="showSection('stats',this)"><span>📊</span>통계</button>
   <button class="nav-item" onclick="showSection('settings',this)"><span>⚙️</span>설정</button>
 </nav>
 
 <script>
-let lottoData=[],currentIndex=0,checkNumbers=new Set(),excludedNumbers=new Set(),requiredNumbers=new Set(),predictCount=5,statData=[],currentSort={key:'num',asc:true},currentFilter='all',zFilter='all';
+// 전역 변수
+let lottoData=[], currentIndex=0, checkNumbers=new Set(), excludedNumbers=new Set(), requiredNumbers=new Set(), wheelNumbers=new Set();
+let predictCount=3, numStats=[], predictOptions=new Set();
+let numSort={key:'num',asc:true}, numFilter='all', pairData={};
 
+// 초기화
 async function init(){
   try{
     const res=await fetch('lotto_data.json');
-    if(!res.ok)throw new Error('데이터 없음');
+    if(!res.ok) throw new Error('데이터 없음');
     lottoData=await res.json();
     lottoData.sort((a,b)=>b.round-a.round);
     document.getElementById('loading').style.display='none';
     document.getElementById('sec-home').classList.add('active');
-    renderCurrentRound();initNumberGrids();calculateStats();renderStats();updateDataStatus();
+    initAllGrids();
+    calculateAllStats();
+    renderCurrentRound();
+    renderAllStats();
+    updateDataStatus();
+    initPairSelect();
   }catch(e){
     document.getElementById('loading').innerHTML='<p style="color:var(--danger)">❌ '+e.message+'</p><button class="btn btn-primary" style="margin-top:16px" onclick="location.reload()">다시 시도</button>';
   }
 }
 
+// 유틸리티
 function getBallClass(n){return n<=10?'b1':n<=20?'b2':n<=30?'b3':n<=40?'b4':'b5'}
-function createBall(n,size='',bonus=false){return '<div class="ball '+size+' '+getBallClass(n)+(bonus?' bonus':'')+'">'+n+'</div>'}
-function createBalls(nums,bonus=null,size='sm'){let h=nums.map(n=>createBall(n,size)).join('');if(bonus)h+='<span class="plus">+</span>'+createBall(bonus,size,true);return h}
+function createBall(n,size='',extra=''){return '<div class="ball '+size+' '+getBallClass(n)+' '+extra+'">'+n+'</div>'}
+function createBalls(nums,bonus=null,size='sm',matched=[]){
+  let h=nums.map(n=>createBall(n,size,matched.includes(n)?'matched':'')).join('');
+  if(bonus!=null) h+='<span class="plus">+</span>'+createBall(bonus,size,matched.includes(bonus)?'matched bonus':'bonus');
+  return h;
+}
 function formatMoney(a){if(!a)return'-';if(a>=1e8)return(a/1e8).toFixed(1)+'억';if(a>=1e4)return Math.floor(a/1e4).toLocaleString()+'만';return a.toLocaleString()}
-function formatDate(d){if(!d||d.length!==8)return d||'';return d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8)}
+function formatDate(d){return d&&d.length===8?d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8):''}
 function calcNetPrize(a){if(!a)return 0;return a>3e8?a-(3e8*.22)-((a-3e8)*.33):a*.78}
-function showSection(id,el){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('sec-'+id).classList.add('active');window.scrollTo(0,0)}
 
+// 섹션/탭
+function showSection(id,el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sec-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function showStatTab(id,el){
+  document.querySelectorAll('#sec-stats .tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.stat-content').forEach(c=>c.style.display='none');
+  el.classList.add('active');
+  document.getElementById('stat-'+id).style.display='block';
+}
+
+// 아코디언
+function toggleAccordion(id){document.getElementById(id).classList.toggle('open')}
+
+// 번호 그리드 초기화
+function initAllGrids(){
+  ['checkGrid','excludeGrid','requireGrid','wheelGrid'].forEach(gid=>{
+    const g=document.getElementById(gid);g.innerHTML='';
+    for(let i=1;i<=45;i++){
+      const b=document.createElement('button');
+      b.className='number-btn '+getBallClass(i);
+      b.textContent=i;
+      b.onclick=()=>toggleGridNumber(gid,i,b);
+      g.appendChild(b);
+    }
+  });
+}
+function toggleGridNumber(gid,num,btn){
+  if(gid==='checkGrid'){
+    if(checkNumbers.has(num)){checkNumbers.delete(num);btn.classList.remove('selected')}
+    else if(checkNumbers.size<6){checkNumbers.add(num);btn.classList.add('selected')}
+    updateMyNumDisplay();
+  }else if(gid==='excludeGrid'){
+    if(excludedNumbers.has(num)){excludedNumbers.delete(num);btn.classList.remove('excluded')}
+    else{excludedNumbers.add(num);requiredNumbers.delete(num);btn.classList.add('excluded');
+      document.querySelectorAll('#requireGrid .number-btn')[num-1].classList.remove('required')}
+    updateExcludeDisplay();
+  }else if(gid==='requireGrid'){
+    if(requiredNumbers.has(num)){requiredNumbers.delete(num);btn.classList.remove('required')}
+    else if(requiredNumbers.size<5&&!excludedNumbers.has(num)){requiredNumbers.add(num);btn.classList.add('required')}
+    updateRequireDisplay();
+  }else if(gid==='wheelGrid'){
+    if(wheelNumbers.has(num)){wheelNumbers.delete(num);btn.classList.remove('selected')}
+    else if(wheelNumbers.size<15){wheelNumbers.add(num);btn.classList.add('selected')}
+    updateWheelDisplay();
+  }
+}
+function updateMyNumDisplay(){
+  const nums=[...checkNumbers].sort((a,b)=>a-b);
+  document.getElementById('myNumDisplay').innerHTML=nums.length?nums.map(n=>createBall(n,'xs')).join(''):'';
+}
+function updateExcludeDisplay(){
+  const nums=[...excludedNumbers].sort((a,b)=>a-b);
+  document.getElementById('excludeDisplay').textContent=nums.length?nums.join(', '):'';
+}
+function updateRequireDisplay(){
+  const nums=[...requiredNumbers].sort((a,b)=>a-b);
+  document.getElementById('requireDisplay').textContent=nums.length?nums.join(', '):'';
+}
+function updateWheelDisplay(){
+  const nums=[...wheelNumbers].sort((a,b)=>a-b);
+  document.getElementById('wheelDisplay').textContent=nums.length?nums.join(', ')+'('+nums.length+'개)':'';
+}
+function clearCheck(){
+  checkNumbers.clear();
+  document.querySelectorAll('#checkGrid .number-btn').forEach(b=>b.classList.remove('selected'));
+  updateMyNumDisplay();
+  document.getElementById('checkResult').innerHTML='';
+}
+
+// 회차 네비게이션
 function renderCurrentRound(){
   const item=lottoData[currentIndex];if(!item)return;
   document.getElementById('currentRound').textContent=item.round+'회';
   document.getElementById('currentDate').textContent=formatDate(item.date);
-  document.getElementById('currentBalls').innerHTML=createBalls(item.numbers,item.bonus,'');
-  const p1=item.rank1?.prize||0,w1=item.rank1?.winners||0,t1=w1>0?p1*w1:(item.rank1?.totalPrize||0),n1=calcNetPrize(p1);
+  
+  // 내 번호와 비교하여 일치 표시
+  const matched=checkNumbers.size===6?[...checkNumbers].filter(n=>item.numbers.includes(n)):[];
+  const bonusMatch=checkNumbers.has(item.bonus);
+  document.getElementById('currentBalls').innerHTML=createBalls(item.numbers,item.bonus,'',matched);
+  
+  // 당첨금 표시
+  const p1=item.rank1?.prize||0,w1=item.rank1?.winners||0;
   document.getElementById('prize1').textContent=formatMoney(p1)+'원';
-  document.getElementById('prize1Net').textContent='실수령액: 약 '+formatMoney(n1)+'원';
-  document.getElementById('prize1Info').textContent=w1+'명 당첨 (총 '+formatMoney(t1)+'원)';
+  document.getElementById('prize1Net').textContent='실수령: '+formatMoney(calcNetPrize(p1))+'원';
+  document.getElementById('prize1Info').textContent=w1+'명 당첨';
+  
   const p2=item.rank2?.prize||0,w2=item.rank2?.winners||0;
-  document.getElementById('prize2').textContent=formatMoney(p2)+'원';document.getElementById('prize2Info').textContent=w2+'명';
+  document.getElementById('prize2').textContent=formatMoney(p2)+'원';
+  document.getElementById('prize2Info').textContent=w2+'명';
+  
   const p3=item.rank3?.prize||0,w3=item.rank3?.winners||0;
-  document.getElementById('prize3').textContent=formatMoney(p3)+'원';document.getElementById('prize3Info').textContent=w3+'명';
+  document.getElementById('prize3').textContent=formatMoney(p3)+'원';
+  document.getElementById('prize3Info').textContent=w3+'명';
+  
   document.getElementById('totalSales').textContent=formatMoney(item.totalSales)+'원';
   document.getElementById('totalWinners').textContent=(item.totalWinners||0).toLocaleString()+'명';
+  
   document.getElementById('prevBtn').disabled=currentIndex>=lottoData.length-1;
   document.getElementById('nextBtn').disabled=currentIndex<=0;
+  
+  // 내 번호 입력되어 있으면 자동 비교
+  if(checkNumbers.size===6) autoCompare();
 }
 function prevRound(){if(currentIndex<lottoData.length-1){currentIndex++;renderCurrentRound()}}
 function nextRound(){if(currentIndex>0){currentIndex--;renderCurrentRound()}}
 function openRoundModal(){document.getElementById('roundModal').classList.add('active');document.getElementById('roundInput').value='';document.getElementById('roundInput').focus()}
 function closeRoundModal(){document.getElementById('roundModal').classList.remove('active')}
-function goToRound(){const r=parseInt(document.getElementById('roundInput').value),idx=lottoData.findIndex(d=>d.round===r);if(idx!==-1){currentIndex=idx;renderCurrentRound();closeRoundModal()}else alert('해당 회차 없음')}
-document.getElementById('roundModal').addEventListener('click',function(e){if(e.target===this)closeRoundModal()});
-document.getElementById('roundInput').addEventListener('keypress',function(e){if(e.key==='Enter')goToRound()});
-
-function initNumberGrids(){
-  ['checkGrid','excludeGrid','requireGrid'].forEach(gid=>{
-    const g=document.getElementById(gid);g.innerHTML='';
-    for(let i=1;i<=45;i++){const b=document.createElement('button');b.className='number-btn '+getBallClass(i);b.textContent=i;b.onclick=()=>toggleNumber(gid,i,b);g.appendChild(b)}
-  });
+function goToRound(){
+  const r=parseInt(document.getElementById('roundInput').value);
+  const idx=lottoData.findIndex(d=>d.round===r);
+  if(idx!==-1){currentIndex=idx;renderCurrentRound();closeRoundModal()}
+  else alert('해당 회차가 없습니다');
 }
-function toggleNumber(gid,num,btn){
-  if(gid==='checkGrid'){if(checkNumbers.has(num)){checkNumbers.delete(num);btn.classList.remove('selected')}else if(checkNumbers.size<6){checkNumbers.add(num);btn.classList.add('selected')}updateSelectedBalls()}
-  else if(gid==='excludeGrid'){if(excludedNumbers.has(num)){excludedNumbers.delete(num);btn.classList.remove('excluded')}else{excludedNumbers.add(num);requiredNumbers.delete(num);btn.classList.add('excluded');document.querySelectorAll('#requireGrid .number-btn')[num-1].classList.remove('required')}}
-  else if(gid==='requireGrid'){if(requiredNumbers.has(num)){requiredNumbers.delete(num);btn.classList.remove('required')}else if(requiredNumbers.size<5&&!excludedNumbers.has(num)){requiredNumbers.add(num);btn.classList.add('required')}}
-}
-function updateSelectedBalls(){document.getElementById('selectedBalls').innerHTML=[...checkNumbers].sort((a,b)=>a-b).map(n=>createBall(n,'xs')).join('')}
-function clearCheck(){checkNumbers.clear();document.querySelectorAll('#checkGrid .number-btn').forEach(b=>b.classList.remove('selected'));updateSelectedBalls();document.getElementById('checkResult').innerHTML=''}
+document.getElementById('roundModal').onclick=function(e){if(e.target===this)closeRoundModal()};
+document.getElementById('roundInput').onkeypress=function(e){if(e.key==='Enter')goToRound()};
 
+// 당첨 확인
 function checkMyNumbers(){
-  if(checkNumbers.size!==6){document.getElementById('checkResult').innerHTML='<div class="alert alert-danger">6개 선택하세요</div>';return}
-  const item=lottoData[currentIndex],my=[...checkNumbers],win=item.numbers,bonus=item.bonus;
-  const matched=my.filter(n=>win.includes(n)),bm=my.includes(bonus);
-  let rank='낙첨',prize=0,isWin=false;
-  if(matched.length===6){rank='1등';prize=item.rank1?.prize||0;isWin=true}
-  else if(matched.length===5&&bm){rank='2등';prize=item.rank2?.prize||0;isWin=true}
-  else if(matched.length===5){rank='3등';prize=item.rank3?.prize||0;isWin=true}
-  else if(matched.length===4){rank='4등';prize=item.rank4?.prize||0;isWin=true}
-  else if(matched.length===3){rank='5등';prize=item.rank5?.prize||0;isWin=true}
-  document.getElementById('checkResult').innerHTML='<div class="check-result"><div class="check-rank '+(isWin?'win':'lose')+'">'+rank+'</div>'+(prize>0?'<div class="check-prize">'+formatMoney(prize)+'원</div><div style="color:var(--success);font-size:13px">실수령: '+formatMoney(calcNetPrize(prize))+'원</div>':'')+'<div style="color:var(--text2);font-size:13px">'+matched.length+'개 일치'+(bm?' + 보너스':'')+'</div></div>';
-}
-
-function calculateStats(){
-  statData=[];const freq={},lastSeen={},gaps={};
-  for(let i=1;i<=45;i++){freq[i]=0;lastSeen[i]=-1;gaps[i]=[]}
-  lottoData.forEach((item,idx)=>{item.numbers.forEach(n=>{freq[n]++;if(lastSeen[n]!==-1)gaps[n].push(idx-lastSeen[n]);lastSeen[n]=idx})});
-  const total=lottoData.length,mean=Object.values(freq).reduce((a,b)=>a+b,0)/45,std=Math.sqrt(Object.values(freq).reduce((s,v)=>s+Math.pow(v-mean,2),0)/45);
-  for(let i=1;i<=45;i++){
-    const avgGap=gaps[i].length>0?gaps[i].reduce((a,b)=>a+b,0)/gaps[i].length:total;
-    const lastIdx=lottoData.findIndex(d=>d.numbers.includes(i));
-    statData.push({num:i,count:freq[i],percent:(freq[i]/(total*6)*100).toFixed(2),last:lastIdx===-1?total:lastIdx,avgGap:avgGap.toFixed(1),zscore:((freq[i]-mean)/std).toFixed(2)});
+  if(checkNumbers.size!==6){
+    document.getElementById('checkResult').innerHTML='<div class="alert alert-danger">6개 번호를 선택하세요</div>';
+    return;
   }
-  window.statSummary={mean,std,min:Math.min(...Object.values(freq)),max:Math.max(...Object.values(freq))};
+  autoCompare();
+}
+function autoCompare(){
+  const item=lottoData[currentIndex];
+  const my=[...checkNumbers],win=item.numbers,bonus=item.bonus;
+  const matched=my.filter(n=>win.includes(n)),bm=my.includes(bonus);
+  
+  let rank='낙첨',prize=0,isWin=false;
+  if(matched.length===6){rank='🥇 1등';prize=item.rank1?.prize||0;isWin=true}
+  else if(matched.length===5&&bm){rank='🥈 2등';prize=item.rank2?.prize||0;isWin=true}
+  else if(matched.length===5){rank='🥉 3등';prize=item.rank3?.prize||0;isWin=true}
+  else if(matched.length===4){rank='4등';prize=50000;isWin=true}
+  else if(matched.length===3){rank='5등';prize=5000;isWin=true}
+  
+  let html='<div class="check-result"><div class="check-rank '+(isWin?'win':'lose')+'">'+rank+'</div>';
+  if(isWin&&prize>5000) html+='<div style="font-size:18px;font-weight:700;margin:8px 0">'+formatMoney(prize)+'원</div><div style="color:var(--success);font-size:12px">실수령: '+formatMoney(calcNetPrize(prize))+'원</div>';
+  else if(isWin) html+='<div style="font-size:16px;margin:8px 0">'+prize.toLocaleString()+'원</div>';
+  html+='<div style="color:var(--text2);font-size:12px;margin-top:8px">'+matched.length+'개 일치'+(bm?' + 보너스':'')+'</div></div>';
+  
+  document.getElementById('checkResult').innerHTML=html;
+  renderCurrentRound(); // 일치 번호 표시 갱신
 }
 
-function showStatTab(id,el){document.querySelectorAll('#sec-stats .tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.stat-content').forEach(c=>c.style.display='none');el.classList.add('active');document.getElementById('stat-'+id).style.display='block'}
-
-function renderStats(){renderFreqTable();renderPatternStats();renderZTable()}
-function renderFreqTable(){
-  let data=[...statData];
-  if(currentFilter==='1-10')data=data.filter(d=>d.num<=10);
-  else if(currentFilter==='11-20')data=data.filter(d=>d.num>10&&d.num<=20);
-  else if(currentFilter==='21-30')data=data.filter(d=>d.num>20&&d.num<=30);
-  else if(currentFilter==='31-40')data=data.filter(d=>d.num>30&&d.num<=40);
-  else if(currentFilter==='41-45')data=data.filter(d=>d.num>40);
-  else if(currentFilter==='hot')data=data.filter(d=>parseFloat(d.zscore)>1);
-  else if(currentFilter==='cold')data=data.filter(d=>parseFloat(d.zscore)<-1);
-  data.sort((a,b)=>{let va=a[currentSort.key],vb=b[currentSort.key];if(typeof va==='string'){va=parseFloat(va);vb=parseFloat(vb)}return currentSort.asc?va-vb:vb-va});
-  document.getElementById('freqTableBody').innerHTML=data.map(d=>'<tr><td>'+createBall(d.num,'xs')+'</td><td>'+d.count+'회</td><td>'+d.percent+'%</td><td>'+(d.last===0?'최근':d.last+'회전')+'</td><td>'+d.avgGap+'회</td></tr>').join('');
-}
-function sortTable(key){if(currentSort.key===key)currentSort.asc=!currentSort.asc;else{currentSort.key=key;currentSort.asc=true}renderFreqTable()}
-function filterTable(f,el){currentFilter=f;document.querySelectorAll('#stat-freq .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderFreqTable()}
-
-function renderPatternStats(){
-  const oe=[0,0,0,0,0,0,0],hl=[0,0,0,0,0,0,0];let sums=[],consec=0,acSum=0;
-  lottoData.forEach(item=>{
-    const nums=item.numbers,odd=nums.filter(n=>n%2===1).length,low=nums.filter(n=>n<=22).length;
-    oe[odd]++;hl[low]++;sums.push(nums.reduce((a,b)=>a+b,0));
-    const sorted=[...nums].sort((a,b)=>a-b);for(let i=0;i<sorted.length-1;i++)if(sorted[i+1]-sorted[i]===1)consec++;
-    const diffs=new Set();for(let i=0;i<nums.length;i++)for(let j=i+1;j<nums.length;j++)diffs.add(Math.abs(nums[j]-nums[i]));acSum+=diffs.size-5;
+// 통계 계산
+function calculateAllStats(){
+  numStats=[];
+  const freq={},lastSeen={},pairs={};
+  for(let i=1;i<=45;i++){freq[i]=0;lastSeen[i]=lottoData.length;pairs[i]={}}
+  
+  lottoData.forEach((item,idx)=>{
+    item.numbers.forEach(n=>{
+      freq[n]++;
+      if(idx<lastSeen[n])lastSeen[n]=idx;
+      // 궁합 계산
+      item.numbers.forEach(m=>{if(n!==m){pairs[n][m]=(pairs[n][m]||0)+1}});
+    });
   });
+  
   const total=lottoData.length;
-  document.getElementById('oddEvenBody').innerHTML=oe.map((v,i)=>'<tr><td>'+i+':'+(6-i)+'</td><td>'+v+'회</td><td>'+(v/total*100).toFixed(1)+'%</td></tr>').join('');
-  document.getElementById('highLowBody').innerHTML=hl.map((v,i)=>'<tr><td>'+i+':'+(6-i)+'</td><td>'+v+'회</td><td>'+(v/total*100).toFixed(1)+'%</td></tr>').join('');
-  const avgSum=(sums.reduce((a,b)=>a+b,0)/total).toFixed(1),minSum=Math.min(...sums),maxSum=Math.max(...sums),avgAC=(acSum/total).toFixed(2);
-  document.getElementById('extraStats').innerHTML='<p>📊 총합 평균: <strong>'+avgSum+'</strong> ('+minSum+'~'+maxSum+')</p><p>🔗 연속번호: 총 '+consec+'쌍 (평균 '+(consec/total).toFixed(2)+'쌍/회차)</p><p>🎲 AC값 평균: <strong>'+avgAC+'</strong></p>';
+  const vals=Object.values(freq);
+  const mean=vals.reduce((a,b)=>a+b,0)/45;
+  const std=Math.sqrt(vals.reduce((s,v)=>s+Math.pow(v-mean,2),0)/45);
+  
+  for(let i=1;i<=45;i++){
+    numStats.push({
+      num:i,
+      count:freq[i],
+      percent:(freq[i]/(total*6)*100).toFixed(2),
+      last:lastSeen[i],
+      zscore:((freq[i]-mean)/std).toFixed(2)
+    });
+  }
+  
+  pairData=pairs;
+  window.statMean=mean;
+  window.statStd=std;
 }
 
-function renderZTable(){
-  let data=[...statData];
-  if(zFilter==='hot')data=data.filter(d=>parseFloat(d.zscore)>1.5);
-  else if(zFilter==='cold')data=data.filter(d=>parseFloat(d.zscore)<-1.5);
-  data.sort((a,b)=>parseFloat(b.zscore)-parseFloat(a.zscore));
-  document.getElementById('zscoreBody').innerHTML=data.map(d=>{
-    const z=parseFloat(d.zscore);let st='보통',sc='var(--text2)';if(z>1.5){st='🔥HOT';sc='var(--danger)'}else if(z<-1.5){st='❄️COLD';sc='#4dabf7'}
-    return '<tr><td>'+createBall(d.num,'xs')+'</td><td>'+d.count+'회</td><td style="color:'+(z>0?'var(--danger)':'#4dabf7')+'">'+d.zscore+'</td><td style="color:'+sc+'">'+st+'</td></tr>';
+// 번호별 통계 렌더링
+function renderNumTable(){
+  let data=[...numStats];
+  
+  if(numFilter==='1-10')data=data.filter(d=>d.num<=10);
+  else if(numFilter==='11-20')data=data.filter(d=>d.num>10&&d.num<=20);
+  else if(numFilter==='21-30')data=data.filter(d=>d.num>20&&d.num<=30);
+  else if(numFilter==='31-40')data=data.filter(d=>d.num>30&&d.num<=40);
+  else if(numFilter==='41-45')data=data.filter(d=>d.num>40);
+  else if(numFilter==='hot')data=data.filter(d=>parseFloat(d.zscore)>1.5);
+  else if(numFilter==='cold')data=data.filter(d=>parseFloat(d.zscore)<-1.5);
+  
+  data.sort((a,b)=>{
+    let va=a[numSort.key],vb=b[numSort.key];
+    if(typeof va==='string'){va=parseFloat(va);vb=parseFloat(vb)}
+    return numSort.asc?va-vb:vb-va;
+  });
+  
+  document.getElementById('numTableBody').innerHTML=data.map(d=>{
+    const z=parseFloat(d.zscore);
+    let status='',sc='var(--text2)';
+    if(z>1.5){status='🔥';sc='var(--danger)'}
+    else if(z<-1.5){status='❄️';sc='#4dabf7'}
+    return '<tr><td>'+createBall(d.num,'xs')+'</td><td>'+d.count+'</td><td>'+d.percent+'%</td><td>'+(d.last===0?'최근':d.last+'회전')+'</td><td style="color:'+(z>0?'var(--danger)':'#4dabf7')+'">'+d.zscore+'</td><td style="color:'+sc+'">'+status+'</td></tr>';
   }).join('');
 }
-function filterZ(f,el){zFilter=f;document.querySelectorAll('#stat-zscore .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderZTable()}
-function sortZ(key){statData.sort((a,b)=>key==='zscore'?parseFloat(b.zscore)-parseFloat(a.zscore):key==='count'?b.count-a.count:a.num-b.num);renderZTable()}
+function sortNum(key){if(numSort.key===key)numSort.asc=!numSort.asc;else{numSort.key=key;numSort.asc=true}renderNumTable()}
+function filterNum(f,el){numFilter=f;document.querySelectorAll('#stat-number .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderNumTable()}
+
+// 궁합 번호
+function initPairSelect(){
+  const sel=document.getElementById('pairSelect');
+  for(let i=1;i<=45;i++) sel.innerHTML+='<option value="'+i+'">'+i+'</option>';
+}
+function showPairNumbers(){
+  const num=parseInt(document.getElementById('pairSelect').value);
+  if(!num){document.getElementById('pairResult').innerHTML='';return}
+  
+  const pairs=pairData[num];
+  const sorted=Object.entries(pairs).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  
+  document.getElementById('pairResult').innerHTML='<div class="pair-grid">'+sorted.map(([n,c])=>'<div class="pair-item">'+createBall(parseInt(n),'xs')+'<div style="margin-top:4px;color:var(--text2)">'+c+'회</div></div>').join('')+'</div>';
+}
+
+// 회차별 통계 렌더링
+function renderRoundStats(){
+  const total=lottoData.length;
+  const oe=[0,0,0,0,0,0,0],hl=[0,0,0,0,0,0,0],endNums={},colors={'1-10':0,'11-20':0,'21-30':0,'31-40':0,'41-45':0};
+  let sums=[],consec=0,acSum=0,carryCount=[0,0,0,0,0,0,0],gapSum=0,gapCnt=0;
+  for(let i=0;i<=9;i++)endNums[i]=0;
+  
+  lottoData.forEach((item,idx)=>{
+    const nums=item.numbers;
+    const odd=nums.filter(n=>n%2===1).length;
+    const low=nums.filter(n=>n<=22).length;
+    oe[odd]++;hl[low]++;
+    
+    const sum=nums.reduce((a,b)=>a+b,0);
+    sums.push(sum);
+    
+    nums.forEach(n=>{
+      endNums[n%10]++;
+      if(n<=10)colors['1-10']++;
+      else if(n<=20)colors['11-20']++;
+      else if(n<=30)colors['21-30']++;
+      else if(n<=40)colors['31-40']++;
+      else colors['41-45']++;
+    });
+    
+    const sorted=[...nums].sort((a,b)=>a-b);
+    for(let i=0;i<sorted.length-1;i++){
+      if(sorted[i+1]-sorted[i]===1)consec++;
+      gapSum+=sorted[i+1]-sorted[i];
+      gapCnt++;
+    }
+    
+    const diffs=new Set();
+    for(let i=0;i<nums.length;i++)for(let j=i+1;j<nums.length;j++)diffs.add(Math.abs(nums[j]-nums[i]));
+    acSum+=diffs.size-5;
+    
+    // 이월 분석
+    if(idx<lottoData.length-1){
+      const prevNums=lottoData[idx+1].numbers;
+      const carry=nums.filter(n=>prevNums.includes(n)).length;
+      carryCount[carry]++;
+    }
+  });
+  
+  // 홀짝
+  document.getElementById('oddEvenBody').innerHTML=oe.map((v,i)=>'<tr><td>'+i+':'+(6-i)+'</td><td>'+v+'</td><td>'+(v/total*100).toFixed(1)+'%</td></tr>').join('');
+  
+  // 고저
+  document.getElementById('highLowBody').innerHTML=hl.map((v,i)=>'<tr><td>'+i+':'+(6-i)+'</td><td>'+v+'</td><td>'+(v/total*100).toFixed(1)+'%</td></tr>').join('');
+  
+  // 총합
+  const avgSum=(sums.reduce((a,b)=>a+b,0)/total).toFixed(1);
+  const minSum=Math.min(...sums),maxSum=Math.max(...sums);
+  const oddSum=sums.filter(s=>s%2===1).length;
+  document.getElementById('sumStats').innerHTML='<div class="info-row"><span>평균</span><span>'+avgSum+'</span></div><div class="info-row"><span>범위</span><span>'+minSum+' ~ '+maxSum+'</span></div><div class="info-row"><span>홀수 합계</span><span>'+oddSum+'회 ('+(oddSum/total*100).toFixed(1)+'%)</span></div><div class="info-row"><span>짝수 합계</span><span>'+(total-oddSum)+'회</span></div>';
+  
+  // 연속/AC
+  const avgAC=(acSum/total).toFixed(2);
+  const avgGap=(gapSum/gapCnt).toFixed(1);
+  document.getElementById('consecStats').innerHTML='<div class="info-row"><span>연속번호 쌍</span><span>총 '+consec+'쌍 (평균 '+(consec/total).toFixed(2)+'/회차)</span></div><div class="info-row"><span>평균 AC값</span><span>'+avgAC+' (0~10)</span></div><div class="info-row"><span>평균 번호간격</span><span>'+avgGap+'</span></div>';
+  
+  // 이월
+  document.getElementById('carryStats').innerHTML=carryCount.map((v,i)=>'<div class="info-row"><span>'+i+'개 이월</span><span>'+v+'회 ('+(v/(total-1)*100).toFixed(1)+'%)</span></div>').join('');
+  
+  // 끝수
+  const totalEndNums=Object.values(endNums).reduce((a,b)=>a+b,0);
+  document.getElementById('endNumBody').innerHTML=Object.entries(endNums).map(([k,v])=>'<tr><td>'+k+'</td><td>'+v+'</td><td>'+(v/totalEndNums*100).toFixed(1)+'%</td></tr>').join('');
+  
+  // 간격
+  document.getElementById('gapStats').innerHTML='<div class="info-row"><span>평균 간격</span><span>'+avgGap+'</span></div><p style="font-size:11px;color:var(--text2);margin-top:8px">번호를 정렬했을 때 인접 번호 간의 차이</p>';
+  
+  // 색상
+  document.getElementById('colorBody').innerHTML=Object.entries(colors).map(([k,v])=>'<tr><td style="color:'+getColorByRange(k)+'">'+k+'</td><td>'+(v/total).toFixed(2)+'개</td><td>'+(v/(total*6)*100).toFixed(1)+'%</td></tr>').join('');
+}
+function getColorByRange(r){
+  if(r==='1-10')return'#ffd700';if(r==='11-20')return'#4dabf7';if(r==='21-30')return'#ff6b6b';if(r==='31-40')return'#868e96';return'#51cf66';
+}
+
+function renderAllStats(){renderNumTable();renderRoundStats()}
+
+// 예측 옵션
+function toggleOption(el,opt){
+  el.classList.toggle('checked');
+  if(predictOptions.has(opt))predictOptions.delete(opt);
+  else predictOptions.add(opt);
+}
 
 function adjustCount(d){predictCount=Math.max(1,Math.min(10,predictCount+d));document.getElementById('predictCount').textContent=predictCount}
+
 function generatePrediction(){
-  const strategy=document.getElementById('predictStrategy').value,results=[];
-  const freq={},lastSeen={};for(let i=1;i<=45;i++){freq[i]=0;lastSeen[i]=9999}
-  lottoData.forEach((item,idx)=>{item.numbers.forEach(n=>{freq[n]++;if(idx<lastSeen[n])lastSeen[n]=idx})});
-  const available=[];for(let i=1;i<=45;i++)if(!excludedNumbers.has(i))available.push(i);
+  const results=[];
+  const available=[];
+  for(let i=1;i<=45;i++)if(!excludedNumbers.has(i))available.push(i);
+  
+  // HOT/COLD 번호 미리 계산
+  const hotNums=numStats.filter(d=>parseFloat(d.zscore)>1.5).map(d=>d.num);
+  const coldNums=numStats.filter(d=>parseFloat(d.zscore)<-1.5).map(d=>d.num);
+  const longAbsentNums=numStats.filter(d=>d.last>=10).sort((a,b)=>b.last-a.last).slice(0,10).map(d=>d.num);
+  const recentFreq={};
+  for(let i=1;i<=45;i++)recentFreq[i]=0;
+  lottoData.slice(0,10).forEach(item=>item.numbers.forEach(n=>recentFreq[n]++));
+  
   for(let set=0;set<predictCount;set++){
-    const selected=[...requiredNumbers],pool=available.filter(n=>!requiredNumbers.has(n));
-    while(selected.length<6&&pool.length>0){
-      let idx;
-      switch(strategy){
-        case'hot':pool.sort((a,b)=>freq[b]-freq[a]);idx=Math.floor(Math.random()*Math.min(15,pool.length));break;
-        case'cold':pool.sort((a,b)=>freq[a]-freq[b]);idx=Math.floor(Math.random()*Math.min(15,pool.length));break;
-        case'balanced':pool.sort((a,b)=>(freq[b]+lastSeen[b]*2)-(freq[a]+lastSeen[a]*2));idx=Math.floor(Math.random()*Math.min(20,pool.length));break;
-        case'pattern':const odds=selected.filter(n=>n%2===1).length,needOdd=odds<3,filtered=pool.filter(n=>needOdd?n%2===1:n%2===0);if(filtered.length>0){idx=Math.floor(Math.random()*filtered.length);selected.push(filtered[idx]);pool.splice(pool.indexOf(filtered[idx]),1);continue}idx=Math.floor(Math.random()*pool.length);break;
-        case'zscore':const mean=Object.values(freq).reduce((a,b)=>a+b,0)/45;pool.sort((a,b)=>Math.abs(freq[b]-mean)-Math.abs(freq[a]-mean));idx=Math.floor(Math.random()*Math.min(15,pool.length));break;
-        case'trend':const rf={};for(let i=1;i<=45;i++)rf[i]=0;lottoData.slice(0,10).forEach(item=>item.numbers.forEach(n=>rf[n]++));pool.sort((a,b)=>rf[b]-rf[a]);idx=Math.floor(Math.random()*Math.min(15,pool.length));break;
-        default:idx=Math.floor(Math.random()*pool.length);
+    let attempts=0,selected=null;
+    
+    while(attempts<100){
+      attempts++;
+      selected=[...requiredNumbers];
+      const pool=available.filter(n=>!requiredNumbers.has(n));
+      
+      // 옵션에 따른 가중치 적용
+      let weights={};
+      pool.forEach(n=>weights[n]=1);
+      
+      if(predictOptions.has('hot'))hotNums.forEach(n=>{if(weights[n])weights[n]+=2});
+      if(predictOptions.has('cold'))coldNums.forEach(n=>{if(weights[n])weights[n]+=2});
+      if(predictOptions.has('recentTrend'))pool.forEach(n=>weights[n]+=recentFreq[n]);
+      if(predictOptions.has('longAbsent'))longAbsentNums.forEach(n=>{if(weights[n])weights[n]+=2});
+      
+      // 가중치 기반 선택
+      while(selected.length<6&&pool.length>0){
+        const totalWeight=pool.reduce((s,n)=>s+weights[n],0);
+        let r=Math.random()*totalWeight,cumul=0,chosen=pool[0];
+        for(const n of pool){cumul+=weights[n];if(r<=cumul){chosen=n;break}}
+        selected.push(chosen);
+        pool.splice(pool.indexOf(chosen),1);
       }
-      selected.push(pool[idx]);pool.splice(idx,1);
+      
+      selected.sort((a,b)=>a-b);
+      
+      // 조건 검증
+      let valid=true;
+      const sum=selected.reduce((a,b)=>a+b,0);
+      const oddCnt=selected.filter(n=>n%2===1).length;
+      const lowCnt=selected.filter(n=>n<=22).length;
+      const colorCnt={'1-10':0,'11-20':0,'21-30':0,'31-40':0,'41-45':0};
+      selected.forEach(n=>{if(n<=10)colorCnt['1-10']++;else if(n<=20)colorCnt['11-20']++;else if(n<=30)colorCnt['21-30']++;else if(n<=40)colorCnt['31-40']++;else colorCnt['41-45']++});
+      const endNums=new Set(selected.map(n=>n%10));
+      let hasConsec=false;
+      for(let i=0;i<selected.length-1;i++)if(selected[i+1]-selected[i]===1)hasConsec=true;
+      
+      if(predictOptions.has('oddEven')&&oddCnt!==3)valid=false;
+      if(predictOptions.has('highLow')&&lowCnt!==3)valid=false;
+      if(predictOptions.has('sumRange')&&(sum<100||sum>175))valid=false;
+      if(predictOptions.has('noConsec')&&hasConsec)valid=false;
+      if(predictOptions.has('colorBalance')&&Math.max(...Object.values(colorCnt))>2)valid=false;
+      if(predictOptions.has('endNumBalance')&&endNums.size<4)valid=false;
+      
+      if(valid)break;
     }
-    results.push(selected.sort((a,b)=>a-b));
+    
+    if(selected&&selected.length===6)results.push(selected);
   }
-  document.getElementById('predictResults').innerHTML=results.map((nums,i)=>'<div class="predict-result"><div class="predict-index">'+(i+1)+'번</div><div class="balls">'+createBalls(nums,null,'sm')+'</div></div>').join('');
+  
+  document.getElementById('predictResults').innerHTML=results.map((nums,i)=>{
+    const sum=nums.reduce((a,b)=>a+b,0);
+    const odd=nums.filter(n=>n%2===1).length;
+    return '<div class="predict-result"><div class="predict-index">'+(i+1)+'번 <span style="color:var(--text2);font-size:10px">합:'+sum+' 홀:'+odd+'</span></div><div class="balls">'+createBalls(nums,null,'sm')+'</div></div>';
+  }).join('')||'<div class="alert alert-danger">조건에 맞는 조합을 생성할 수 없습니다</div>';
 }
 
-function updateDataStatus(){
-  if(!lottoData.length){document.getElementById('dataStatus').innerHTML='<p>데이터 없음</p>';return}
-  const first=lottoData[lottoData.length-1],last=lottoData[0];
-  document.getElementById('dataStatus').innerHTML='<table class="stat-table"><tr><td>총 회차</td><td><strong>'+lottoData.length+'회</strong></td></tr><tr><td>범위</td><td>'+first.round+'회 ~ '+last.round+'회</td></tr><tr><td>최신</td><td>'+formatDate(last.date)+'</td></tr></table>';
+// 축소 시스템
+function generateWheel(){
+  if(wheelNumbers.size<6){
+    document.getElementById('wheelResults').innerHTML='<div class="alert alert-danger">최소 6개 번호를 선택하세요</div>';
+    return;
+  }
+  if(wheelNumbers.size>12){
+    document.getElementById('wheelResults').innerHTML='<div class="alert alert-danger">최대 12개까지 선택 가능합니다 (조합 수 제한)</div>';
+    return;
+  }
+  
+  const nums=[...wheelNumbers].sort((a,b)=>a-b);
+  const combos=[];
+  
+  function combine(start,combo){
+    if(combo.length===6){combos.push([...combo]);return}
+    for(let i=start;i<nums.length;i++){
+      combo.push(nums[i]);
+      combine(i+1,combo);
+      combo.pop();
+    }
+  }
+  combine(0,[]);
+  
+  document.getElementById('wheelResults').innerHTML='<div class="wheel-info">총 '+combos.length+'개 조합</div><div class="wheel-result">'+combos.slice(0,50).map((c,i)=>'<div class="wheel-item">'+(i+1)+'. '+c.join(', ')+'</div>').join('')+(combos.length>50?'<div class="wheel-item" style="color:var(--text2)">... 외 '+(combos.length-50)+'개</div>':'')+'</div>';
 }
-function exportData(){const b=new Blob([JSON.stringify(lottoData,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lotto_data.json';a.click()}
+
+// 설정
+function updateDataStatus(){
+  if(!lottoData.length){document.getElementById('dataStatus').innerHTML='데이터 없음';return}
+  const first=lottoData[lottoData.length-1],last=lottoData[0];
+  document.getElementById('dataStatus').innerHTML='<div class="info-row"><span>총 회차</span><span><strong>'+lottoData.length+'회</strong></span></div><div class="info-row"><span>범위</span><span>'+first.round+'회 ~ '+last.round+'회</span></div><div class="info-row"><span>최신 추첨일</span><span>'+formatDate(last.date)+'</span></div>';
+}
+function exportData(){
+  const b=new Blob([JSON.stringify(lottoData,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lotto_data.json';a.click();
+}
 
 init();
 </script>
