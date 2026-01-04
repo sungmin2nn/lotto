@@ -1,0 +1,33 @@
+name: 로또 데이터 수집
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # 매주 일요일 오전 9시 (KST)
+  workflow_dispatch:      # 수동 실행
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+      
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 의존성 설치
+        run: pip install requests
+      
+      - name: 로또 데이터 수집
+        run: python collect_lotto.py
+      
+      - name: 변경사항 커밋 & 푸시
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add lotto_data.json
+          git diff --staged --quiet || git commit -m "🎱 로또 데이터 업데이트 $(date +'%Y-%m-%d')"
+          git push
