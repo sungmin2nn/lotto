@@ -4,138 +4,143 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#0f0f1e">
+  <meta name="theme-color" content="#ffffff">
   <title>🎱 로또 분석기</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    :root{--bg:#0f0f1e;--card:#1a1a2e;--card2:#252542;--primary:#667eea;--primary2:#764ba2;--text:#fff;--text2:#888899;--success:#51cf66;--danger:#ff6b6b;--warning:#ffd43b}
+    :root{--bg:#f6f8fa;--card:#ffffff;--card2:#f6f8fa;--border:#d0d7de;--primary:#0969da;--primary2:#0550ae;--text:#1f2328;--text2:#656d76;--success:#1a7f37;--danger:#cf222e;--warning:#9a6700}
     html,body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);min-height:100vh;color:var(--text)}
     .app{max-width:500px;margin:0 auto;padding:16px;padding-bottom:80px}
-    .header{text-align:center;background:linear-gradient(135deg,var(--primary),var(--primary2));margin:-16px -16px 16px;padding:24px 16px}
+    .header{text-align:center;background:linear-gradient(135deg,#24292f,#32383f);color:#fff;margin:-16px -16px 16px;padding:24px 16px;border-bottom:1px solid var(--border)}
     .header h1{font-size:1.5rem;margin-bottom:4px}.header p{font-size:12px;opacity:.8}
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.1);z-index:100}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));border-top:1px solid var(--border);z-index:100}
     .nav-item{display:flex;flex-direction:column;align-items:center;padding:8px 12px;color:var(--text2);font-size:10px;background:none;border:none;cursor:pointer}
     .nav-item.active{color:var(--primary)}.nav-item span{font-size:20px;margin-bottom:2px}
-    .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px}
-    .card-title{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-    .card-highlight{background:linear-gradient(135deg,rgba(102,126,234,.15),rgba(118,75,162,.15));border:1px solid rgba(102,126,234,.3)}
+    .card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid var(--border)}
+    .card-title{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--text)}
+    .card-highlight{background:linear-gradient(135deg,rgba(9,105,218,.05),rgba(5,80,174,.05));border:1px solid rgba(9,105,218,.3)}
     .balls{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
     .ball{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
     .ball.sm{width:32px;height:32px;font-size:12px}.ball.xs{width:26px;height:26px;font-size:10px}
-    .ball.b1{background:linear-gradient(135deg,#ffd700,#f0a500)}.ball.b2{background:linear-gradient(135deg,#4dabf7,#228be6)}
-    .ball.b3{background:linear-gradient(135deg,#ff6b6b,#e03131)}.ball.b4{background:linear-gradient(135deg,#868e96,#495057)}
-    .ball.b5{background:linear-gradient(135deg,#51cf66,#2f9e44)}.ball.bonus{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--primary)}
+    .ball.b1{background:linear-gradient(135deg,#f0b400,#d49a00)}.ball.b2{background:linear-gradient(135deg,#218bff,#0969da)}
+    .ball.b3{background:linear-gradient(135deg,#fa4549,#cf222e)}.ball.b4{background:linear-gradient(135deg,#6e7781,#57606a)}
+    .ball.b5{background:linear-gradient(135deg,#2da44e,#1a7f37)}.ball.bonus{box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--primary)}
     .ball.matched{box-shadow:0 0 0 3px var(--success)}.plus{color:var(--text2);font-size:16px;margin:0 4px}
-    
-    .accordion{border-radius:12px;overflow:hidden;background:var(--card2);margin-bottom:12px}
+
+    .accordion{border-radius:10px;overflow:hidden;background:var(--card);border:1px solid var(--border);margin-bottom:12px}
     .accordion-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:13px}
-    .accordion-header:hover{background:rgba(255,255,255,.05)}
-    .accordion-icon{transition:transform .2s}
+    .accordion-header:hover{background:var(--card2)}
+    .accordion-icon{transition:transform .2s;color:var(--text2)}
     .accordion.open .accordion-icon{transform:rotate(180deg)}
     .accordion-content{max-height:0;overflow:hidden;transition:max-height .3s}
     .accordion.open .accordion-content{max-height:500px}
     .accordion-inner{padding:0 16px 16px}
-    
+
     .number-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
-    .number-btn{aspect-ratio:1;border:none;border-radius:8px;font-weight:600;font-size:11px;cursor:pointer;transition:all .15s}
-    .number-btn.b1{background:rgba(255,215,0,.2);color:#ffd700}.number-btn.b2{background:rgba(77,171,247,.2);color:#4dabf7}
-    .number-btn.b3{background:rgba(255,107,107,.2);color:#ff6b6b}.number-btn.b4{background:rgba(134,142,150,.2);color:#868e96}
-    .number-btn.b5{background:rgba(81,207,102,.2);color:#51cf66}
-    .number-btn.selected{background:var(--primary)!important;color:#fff!important}
-    .number-btn.excluded{background:var(--danger)!important;color:#fff!important}
-    .number-btn.required{background:var(--success)!important;color:#fff!important}
-    
-    .btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer}
-    .btn:active{transform:scale(.98)}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
-    .btn-success{background:linear-gradient(135deg,#51cf66,#2f9e44);color:#fff}
-    .btn-outline{background:transparent;border:1px solid var(--primary);color:var(--primary)}
+    .number-btn{aspect-ratio:1;border:1px solid var(--border);border-radius:8px;font-weight:600;font-size:11px;cursor:pointer;transition:all .15s;background:var(--card)}
+    .number-btn.b1{background:#fffbeb;color:#92400e;border-color:#fde68a}.number-btn.b2{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+    .number-btn.b3{background:#fef2f2;color:#991b1b;border-color:#fecaca}.number-btn.b4{background:#f3f4f6;color:#374151;border-color:#d1d5db}
+    .number-btn.b5{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+    .number-btn.selected{background:var(--primary)!important;color:#fff!important;border-color:var(--primary)!important}
+    .number-btn.excluded{background:var(--danger)!important;color:#fff!important;border-color:var(--danger)!important}
+    .number-btn.required{background:var(--success)!important;color:#fff!important;border-color:var(--success)!important}
+
+    .btn{width:100%;padding:14px;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+    .btn:active{transform:scale(.98)}.btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:var(--primary2)}
+    .btn-success{background:var(--success);color:#fff}
+    .btn-outline{background:var(--card);border:1px solid var(--border);color:var(--text)}
+    .btn-outline:hover{background:var(--card2)}
     .btn-sm{padding:10px 16px;font-size:13px;width:auto}
-    
+
     .round-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px}
-    .round-nav button{width:44px;height:44px;border-radius:50%;border:none;background:var(--card2);color:var(--text);font-size:18px;cursor:pointer}
-    .round-nav button:disabled{opacity:.3}.round-nav button:active:not(:disabled){background:var(--primary)}
+    .round-nav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:18px;cursor:pointer}
+    .round-nav button:disabled{opacity:.3}.round-nav button:hover:not(:disabled){background:var(--card2)}
+    .round-nav button:active:not(:disabled){background:var(--primary);color:#fff}
     .round-display{text-align:center;cursor:pointer;min-width:120px}
-    .round-num{font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .round-num{font-size:24px;font-weight:800;color:var(--primary)}
     .round-date{font-size:12px;color:var(--text2)}
-    
+
     .prize-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
-    .prize-item{background:var(--card2);padding:10px;border-radius:10px;text-align:center}
-    .prize-item.main{grid-column:span 2;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,107,107,.15));border:1px solid rgba(255,215,0,.3)}
-    .prize-label{font-size:10px;color:var(--text2)}.prize-value{font-size:16px;font-weight:700}
-    .prize-value.highlight{color:var(--warning);font-size:20px}
+    .prize-item{background:var(--card2);padding:10px;border-radius:8px;text-align:center;border:1px solid var(--border)}
+    .prize-item.main{grid-column:span 2;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fde68a}
+    .prize-label{font-size:10px;color:var(--text2)}.prize-value{font-size:16px;font-weight:700;color:var(--text)}
+    .prize-value.highlight{color:#b45309;font-size:20px}
     .prize-sub{font-size:10px;color:var(--text2);margin-top:2px}
     .prize-net{font-size:11px;color:var(--success);margin-top:2px}
-    
-    .check-result{text-align:center;padding:16px;background:var(--card2);border-radius:12px;margin:12px 0}
+
+    .check-result{text-align:center;padding:16px;background:var(--card2);border-radius:10px;margin:12px 0;border:1px solid var(--border)}
     .check-rank{font-size:32px;font-weight:800}
-    .check-rank.win{background:linear-gradient(135deg,var(--warning),#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .check-rank.win{color:#b45309}
     .check-rank.lose{color:var(--text2)}
-    
-    .info-box{background:var(--card2);border-radius:10px;padding:12px;font-size:12px;line-height:1.6}
+
+    .info-box{background:var(--card2);border-radius:8px;padding:12px;font-size:12px;line-height:1.6;border:1px solid var(--border)}
     .info-box h4{color:var(--primary);margin-bottom:8px;font-size:13px}
-    .info-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .info-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)}
     .info-row:last-child{border:none}
-    
-    .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+
+    .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(27,31,36,.5);z-index:200;align-items:center;justify-content:center}
     .modal-overlay.active{display:flex}
-    .modal{background:var(--card);border-radius:16px;padding:24px;width:90%;max-width:320px}
-    .modal h3{margin-bottom:16px;text-align:center;font-size:16px}
-    .modal input{width:100%;padding:14px;border:none;border-radius:12px;background:var(--card2);color:var(--text);font-size:18px;text-align:center;margin-bottom:12px}
+    .modal{background:var(--card);border-radius:12px;padding:24px;width:90%;max-width:320px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(140,149,159,.2)}
+    .modal h3{margin-bottom:16px;text-align:center;font-size:16px;color:var(--text)}
+    .modal input{width:100%;padding:14px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:18px;text-align:center;margin-bottom:12px}
+    .modal input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(9,105,218,.15)}
     .modal-buttons{display:flex;gap:8px}.modal-buttons button{flex:1}
-    
+
     .tabs{display:flex;gap:6px;margin-bottom:16px}
-    .tab{flex:1;padding:10px;border-radius:10px;font-size:12px;background:var(--card2);color:var(--text2);border:none;cursor:pointer;text-align:center}
-    .tab.active{background:var(--primary);color:#fff}
-    
+    .tab{flex:1;padding:10px;border-radius:8px;font-size:12px;background:var(--card);color:var(--text2);border:1px solid var(--border);cursor:pointer;text-align:center}
+    .tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
     .stat-table{width:100%;border-collapse:collapse;font-size:11px}
-    .stat-table th,.stat-table td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--card2)}
+    .stat-table th,.stat-table td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--border)}
     .stat-table th{background:var(--card2);color:var(--text2);cursor:pointer;position:sticky;top:0;font-weight:500}
     .stat-table th:hover{background:var(--primary);color:#fff}
-    .stat-table tr:hover{background:rgba(102,126,234,.1)}
-    .table-scroll{max-height:350px;overflow-y:auto;border-radius:8px}
-    
+    .stat-table tr:hover{background:rgba(9,105,218,.05)}
+    .table-scroll{max-height:350px;overflow-y:auto;border-radius:8px;border:1px solid var(--border)}
+
     .filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-    .filter-chip{padding:6px 10px;border-radius:14px;font-size:10px;background:var(--card2);color:var(--text2);border:none;cursor:pointer}
-    .filter-chip.active{background:var(--primary);color:#fff}
-    
-    .help-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--card2);color:var(--text2);font-size:10px;cursor:pointer;margin-left:4px}
-    .help-icon:hover{background:var(--primary);color:#fff}
-    
-    .tooltip{position:relative}.tooltip-text{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--primary);padding:8px 12px;border-radius:8px;font-size:11px;white-space:nowrap;z-index:10}
+    .filter-chip{padding:6px 10px;border-radius:20px;font-size:10px;background:var(--card);color:var(--text2);border:1px solid var(--border);cursor:pointer}
+    .filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+    .help-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--card2);color:var(--text2);font-size:10px;cursor:pointer;margin-left:4px;border:1px solid var(--border)}
+    .help-icon:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+    .tooltip{position:relative}.tooltip-text{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);padding:8px 12px;border-radius:8px;font-size:11px;white-space:nowrap;z-index:10;box-shadow:0 4px 12px rgba(140,149,159,.15)}
     .tooltip:hover .tooltip-text{display:block}
-    
+
     .checkbox-group{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-    .checkbox-item{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card2);border-radius:8px;cursor:pointer;font-size:12px}
+    .checkbox-item{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:12px}
     .checkbox-item input{display:none}
-    .checkbox-item.checked{background:var(--primary)}
-    .checkbox-box{width:16px;height:16px;border:2px solid var(--text2);border-radius:4px;display:flex;align-items:center;justify-content:center}
+    .checkbox-item.checked{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .checkbox-box{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center}
     .checkbox-item.checked .checkbox-box{border-color:#fff;background:rgba(255,255,255,.2)}
     .checkbox-item.checked .checkbox-box::after{content:'✓';color:#fff;font-size:10px}
-    
-    .predict-result{background:linear-gradient(135deg,rgba(102,126,234,.1),rgba(118,75,162,.1));border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:12px;margin-bottom:8px}
+
+    .predict-result{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px}
     .predict-index{font-size:11px;color:var(--primary);margin-bottom:8px}
-    
+
     .section{display:none}.section.active{display:block}
     .loading{text-align:center;padding:60px 20px}
-    .spinner{width:40px;height:40px;border:4px solid var(--card2);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+    .spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
     @keyframes spin{to{transform:rotate(360deg)}}
-    
+
     .alert{padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:12px}
-    .alert-danger{background:rgba(255,107,107,.2);color:var(--danger)}
-    .alert-success{background:rgba(81,207,102,.2);color:var(--success)}
-    
+    .alert-danger{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
+    .alert-success{background:#f0fdf4;color:var(--success);border:1px solid #bbf7d0}
+
     .selected-display{display:flex;align-items:center;gap:8px;min-height:32px}
     .selected-label{font-size:11px;color:var(--text2)}
-    
-    .wheel-section{margin-top:16px;padding-top:16px;border-top:1px solid var(--card2)}
+
+    .wheel-section{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
     .wheel-info{font-size:11px;color:var(--text2);margin-bottom:8px}
     .wheel-result{max-height:200px;overflow-y:auto}
-    .wheel-item{padding:8px;background:var(--card2);border-radius:8px;margin-bottom:4px;font-size:12px;text-align:center}
-    
-    .input{width:100%;padding:12px;border:none;border-radius:10px;background:var(--card2);color:var(--text);font-size:14px}
-    
+    .wheel-item{padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:8px;margin-bottom:4px;font-size:12px;text-align:center}
+
+    .input{width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:14px}
+    .input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(9,105,218,.15)}
+
     .pair-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-    .pair-item{background:var(--card2);padding:8px;border-radius:8px;text-align:center;font-size:11px}
+    .pair-item{background:var(--card2);padding:8px;border-radius:8px;text-align:center;font-size:11px;border:1px solid var(--border)}
     .pair-num{font-weight:700;color:var(--primary)}
   </style>
 </head>
@@ -177,7 +182,7 @@
           <div class="round-num" id="currentRound">-</div>
           <div class="round-date" id="currentDate">터치하여 회차 입력</div>
         </div>
-        <button onclick="nextRound()" id="nextBtn">▶</button>
+        <button onclick="nextOrCollect()" id="nextBtn">▶</button>
       </div>
       
       <div class="balls" id="currentBalls"></div>
@@ -208,8 +213,14 @@
           <div class="prize-value" id="totalWinners">-</div>
         </div>
       </div>
+
+      <!-- 예측 조건 정합성 -->
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:8px">📊 예측 조건 정합성</div>
+        <div id="validityCheck" style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:11px"></div>
+      </div>
     </div>
-    
+
     <!-- 당첨 조건 안내 -->
     <div class="card">
       <div class="card-title">📋 당첨 조건</div>
@@ -440,7 +451,57 @@
       </div>
     </div>
   </div>
-  
+
+  <!-- 내 예측 -->
+  <div id="sec-mypredict" class="section">
+    <div class="card">
+      <div class="card-title">📝 내 예측 기록</div>
+      <div id="myPredictSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+        <div style="text-align:center;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px">
+          <div style="font-size:18px;font-weight:700;color:var(--text)" id="mpTotal">0</div>
+          <div style="font-size:10px;color:var(--text2)">총 예측</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px">
+          <div style="font-size:18px;font-weight:700;color:var(--success)" id="mpWin">0</div>
+          <div style="font-size:10px;color:var(--text2)">당첨</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px">
+          <div style="font-size:18px;font-weight:700;color:var(--primary)" id="mpPending">0</div>
+          <div style="font-size:10px;color:var(--text2)">대기중</div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="openAddPredictModal()" style="margin-bottom:8px">➕ 직접 추가</button>
+    </div>
+
+    <!-- 대기중 예측 -->
+    <div class="card">
+      <div class="card-title">⏳ 대기중 (결과 미확정)</div>
+      <div id="pendingPredicts" style="font-size:12px;color:var(--text2)">예측 기록이 없습니다</div>
+    </div>
+
+    <!-- 완료된 예측 -->
+    <div class="card">
+      <div class="card-title">✅ 완료 (결과 확정)</div>
+      <div id="completedPredicts" style="font-size:12px;color:var(--text2)">예측 기록이 없습니다</div>
+    </div>
+
+    <!-- 성과 분석 -->
+    <div class="card">
+      <div class="card-title">📈 성과 분석</div>
+      <div id="performanceAnalysis">
+        <div style="color:var(--text2);font-size:12px;text-align:center;padding:12px">예측 기록이 쌓이면 분석 데이터가 표시됩니다</div>
+      </div>
+    </div>
+
+    <!-- 번호 선호도 -->
+    <div class="card">
+      <div class="card-title">🔢 내 번호 선호도</div>
+      <div id="numberPreference">
+        <div style="color:var(--text2);font-size:12px;text-align:center;padding:12px">예측 기록이 없습니다</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 설정 -->
   <div id="sec-settings" class="section">
     <div class="card">
@@ -449,8 +510,10 @@
     </div>
     <div class="card">
       <div class="card-title">🔄 관리</div>
+      <button class="btn btn-primary" onclick="manualCollect()" style="margin-bottom:8px" id="collectBtn">📡 수동 수집</button>
       <button class="btn btn-outline" onclick="location.reload()" style="margin-bottom:8px">🔄 새로고침</button>
       <button class="btn btn-outline" onclick="exportData()">📤 데이터 내보내기</button>
+      <div id="collectStatus" style="margin-top:8px;font-size:12px;color:var(--text2)"></div>
     </div>
     <div class="card">
       <div class="card-title">ℹ️ 용어 설명</div>
@@ -480,10 +543,35 @@
   </div>
 </div>
 
+<!-- 예측 추가/수정 모달 -->
+<div class="modal-overlay" id="predictModal">
+  <div class="modal" style="max-width:360px">
+    <h3 id="predictModalTitle">예측 추가</h3>
+    <input type="hidden" id="predictEditId">
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">대상 회차</label>
+      <input type="number" id="predictRoundInput" placeholder="예: 1209" inputmode="numeric" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--card2);color:var(--text);font-size:14px">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">번호 6개 (쉼표로 구분)</label>
+      <input type="text" id="predictNumbersInput" placeholder="예: 1, 7, 15, 23, 35, 42" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--card2);color:var(--text);font-size:14px">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px">메모 (선택)</label>
+      <input type="text" id="predictMemoInput" placeholder="예: AI 예측, 생일 번호 등" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--card2);color:var(--text);font-size:14px">
+    </div>
+    <div class="modal-buttons">
+      <button class="btn btn-outline" onclick="closePredictModal()">취소</button>
+      <button class="btn btn-primary" onclick="savePrediction()">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- 하단 네비게이션 -->
 <nav class="bottom-nav">
   <button class="nav-item active" onclick="showSection('home',this)"><span>🏠</span>홈</button>
   <button class="nav-item" onclick="showSection('predict',this)"><span>🔮</span>예측</button>
+  <button class="nav-item" onclick="showSection('mypredict',this)"><span>📝</span>내 예측</button>
   <button class="nav-item" onclick="showSection('stats',this)"><span>📊</span>통계</button>
   <button class="nav-item" onclick="showSection('settings',this)"><span>⚙️</span>설정</button>
 </nav>
@@ -493,6 +581,7 @@
 let lottoData=[], currentIndex=0, checkNumbers=new Set(), excludedNumbers=new Set(), requiredNumbers=new Set(), wheelNumbers=new Set();
 let predictCount=3, numStats=[], predictOptions=new Set();
 let numSort={key:'num',asc:true}, numFilter='all', pairData={};
+let myPredictions=[]; // 내 예측 저장
 
 // 초기화
 async function init(){
@@ -509,6 +598,7 @@ async function init(){
     renderAllStats();
     updateDataStatus();
     initPairSelect();
+    loadMyPredictions();
   }catch(e){
     document.getElementById('loading').innerHTML='<p style="color:var(--danger)">❌ '+e.message+'</p><button class="btn btn-primary" style="margin-top:16px" onclick="location.reload()">다시 시도</button>';
   }
@@ -525,6 +615,56 @@ function createBalls(nums,bonus=null,size='sm',matched=[]){
 function formatMoney(a){if(!a)return'-';if(a>=1e8)return(a/1e8).toFixed(1)+'억';if(a>=1e4)return Math.floor(a/1e4).toLocaleString()+'만';return a.toLocaleString()}
 function formatDate(d){return d&&d.length===8?d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8):''}
 function calcNetPrize(a){if(!a)return 0;return a>3e8?a-(3e8*.22)-((a-3e8)*.33):a*.78}
+
+// 공통: 색상대별 카운트 계산
+function getColorDistribution(numbers){
+  const dist={'1-10':0,'11-20':0,'21-30':0,'31-40':0,'41-45':0};
+  numbers.forEach(n=>{
+    if(n<=10)dist['1-10']++;
+    else if(n<=20)dist['11-20']++;
+    else if(n<=30)dist['21-30']++;
+    else if(n<=40)dist['31-40']++;
+    else dist['41-45']++;
+  });
+  return dist;
+}
+
+// 공통: API로 로또 데이터 가져오기
+async function fetchLottoRound(round){
+  const apiUrl='https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo='+round;
+  const res=await fetch(apiUrl);
+  const data=await res.json();
+  if(data.returnValue!=='success')return null;
+  return{
+    round:data.drwNo,
+    date:data.drwNoDate.replace(/-/g,''),
+    numbers:[data.drwtNo1,data.drwtNo2,data.drwtNo3,data.drwtNo4,data.drwtNo5,data.drwtNo6],
+    bonus:data.bnusNo,
+    rank1:{winners:data.firstPrzwnerCo||0,prize:data.firstWinamnt||0,totalPrize:data.firstAccumamnt||0},
+    rank2:{winners:0,prize:0,totalPrize:0},
+    rank3:{winners:0,prize:0,totalPrize:0},
+    rank4:{winners:0,prize:0,totalPrize:0},
+    rank5:{winners:0,prize:0,totalPrize:0},
+    totalWinners:0,
+    totalSales:data.totSellamnt||0,
+    gameNo:0
+  };
+}
+
+// 공통: 새 회차 수집 후 데이터 갱신
+function refreshAfterCollect(newData){
+  newData.forEach(d=>{
+    if(!lottoData.find(x=>x.round===d.round)){
+      lottoData.unshift(d);
+    }
+  });
+  lottoData.sort((a,b)=>b.round-a.round);
+  currentIndex=0;
+  calculateAllStats();
+  renderCurrentRound();
+  renderAllStats();
+  updateDataStatus();
+}
 
 // 섹션/탭
 function showSection(id,el){
@@ -629,13 +769,64 @@ function renderCurrentRound(){
   document.getElementById('totalWinners').textContent=(item.totalWinners||0).toLocaleString()+'명';
   
   document.getElementById('prevBtn').disabled=currentIndex>=lottoData.length-1;
-  document.getElementById('nextBtn').disabled=currentIndex<=0;
+
+  // 최신 회차일 때 nextBtn을 수동 수집 버튼(⭕)으로 변경
+  const nextBtn=document.getElementById('nextBtn');
+  if(currentIndex<=0){
+    nextBtn.textContent='⭕';
+    nextBtn.disabled=false;
+    nextBtn.title='새 회차 수집';
+  }else{
+    nextBtn.textContent='▶';
+    nextBtn.disabled=false;
+    nextBtn.title='다음 회차';
+  }
   
   // 내 번호 입력되어 있으면 자동 비교
   if(checkNumbers.size===6) autoCompare();
+
+  // 예측 조건 정합성 체크
+  renderValidityCheck(item.numbers);
 }
 function prevRound(){if(currentIndex<lottoData.length-1){currentIndex++;renderCurrentRound()}}
 function nextRound(){if(currentIndex>0){currentIndex--;renderCurrentRound()}}
+
+// 예측 조건 정합성 체크 렌더링 (analyzeNumbersFull 사용)
+function renderValidityCheck(numbers){
+  if(!numbers||numbers.length!==6)return;
+
+  const analysis=analyzeNumbersFull(numbers);
+
+  const checks=[
+    {name:'홀짝 균형',value:analysis.oddEven,detail:analysis.oddCount+':'+(6-analysis.oddCount)},
+    {name:'고저 균형',value:analysis.highLow,detail:analysis.lowCount+':'+(6-analysis.lowCount)},
+    {name:'총합 100-175',value:analysis.sumInRange,detail:'합:'+analysis.sum},
+    {name:'연속번호 없음',value:analysis.noConsec,detail:analysis.hasConsec?'있음':'없음'},
+    {name:'색상 균형',value:analysis.colorBalance,detail:'최대'+analysis.maxColorCount+'개'},
+    {name:'끝수 분산',value:analysis.endNumBalance,detail:analysis.endNumCount+'종류'},
+    {name:'HOT 번호',value:analysis.hasHot,detail:analysis.hasHot?'포함':'미포함'},
+    {name:'COLD 번호',value:analysis.hasCold,detail:analysis.hasCold?'포함':'미포함'},
+    {name:'미출현 번호',value:analysis.hasLongAbsent,detail:analysis.hasLongAbsent?'포함':'미포함'},
+    {name:'최근 트렌드',value:analysis.hasRecentTrend,detail:analysis.hasRecentTrend?'포함':'미포함'}
+  ];
+
+  const html=checks.map(c=>{
+    const icon=c.value?'<span style="color:var(--success)">⭕</span>':'<span style="color:var(--danger)">❌</span>';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:var(--card2);border:1px solid var(--border);border-radius:6px">'+
+      '<span style="color:var(--text)">'+c.name+'</span>'+
+      '<span>'+icon+' <span style="color:var(--text2);font-size:10px">'+c.detail+'</span></span></div>';
+  }).join('');
+
+  document.getElementById('validityCheck').innerHTML=html;
+}
+function nextOrCollect(){
+  if(currentIndex<=0){
+    // 최신 회차면 수동 수집 실행
+    manualCollectFromMain();
+  }else{
+    nextRound();
+  }
+}
 function openRoundModal(){document.getElementById('roundModal').classList.add('active');document.getElementById('roundInput').value='';document.getElementById('roundInput').focus()}
 function closeRoundModal(){document.getElementById('roundModal').classList.remove('active')}
 function goToRound(){
@@ -767,19 +958,17 @@ function renderRoundStats(){
     const odd=nums.filter(n=>n%2===1).length;
     const low=nums.filter(n=>n<=22).length;
     oe[odd]++;hl[low]++;
-    
+
     const sum=nums.reduce((a,b)=>a+b,0);
     sums.push(sum);
-    
-    nums.forEach(n=>{
-      endNums[n%10]++;
-      if(n<=10)colors['1-10']++;
-      else if(n<=20)colors['11-20']++;
-      else if(n<=30)colors['21-30']++;
-      else if(n<=40)colors['31-40']++;
-      else colors['41-45']++;
-    });
-    
+
+    // 끝수 통계
+    nums.forEach(n=>endNums[n%10]++);
+
+    // 색상 통계 (getColorDistribution 활용)
+    const colorDist=getColorDistribution(nums);
+    Object.keys(colors).forEach(k=>colors[k]+=colorDist[k]);
+
     const sorted=[...nums].sort((a,b)=>a-b);
     for(let i=0;i<sorted.length-1;i++){
       if(sorted[i+1]-sorted[i]===1)consec++;
@@ -884,25 +1073,18 @@ function generatePrediction(){
       }
       
       selected.sort((a,b)=>a-b);
-      
-      // 조건 검증
+
+      // 조건 검증 (analyzeNumbersFull 사용)
+      const analysis=analyzeNumbersFull(selected);
       let valid=true;
-      const sum=selected.reduce((a,b)=>a+b,0);
-      const oddCnt=selected.filter(n=>n%2===1).length;
-      const lowCnt=selected.filter(n=>n<=22).length;
-      const colorCnt={'1-10':0,'11-20':0,'21-30':0,'31-40':0,'41-45':0};
-      selected.forEach(n=>{if(n<=10)colorCnt['1-10']++;else if(n<=20)colorCnt['11-20']++;else if(n<=30)colorCnt['21-30']++;else if(n<=40)colorCnt['31-40']++;else colorCnt['41-45']++});
-      const endNums=new Set(selected.map(n=>n%10));
-      let hasConsec=false;
-      for(let i=0;i<selected.length-1;i++)if(selected[i+1]-selected[i]===1)hasConsec=true;
-      
-      if(predictOptions.has('oddEven')&&oddCnt!==3)valid=false;
-      if(predictOptions.has('highLow')&&lowCnt!==3)valid=false;
-      if(predictOptions.has('sumRange')&&(sum<100||sum>175))valid=false;
-      if(predictOptions.has('noConsec')&&hasConsec)valid=false;
-      if(predictOptions.has('colorBalance')&&Math.max(...Object.values(colorCnt))>2)valid=false;
-      if(predictOptions.has('endNumBalance')&&endNums.size<4)valid=false;
-      
+
+      if(predictOptions.has('oddEven')&&!analysis.oddEven)valid=false;
+      if(predictOptions.has('highLow')&&!analysis.highLow)valid=false;
+      if(predictOptions.has('sumRange')&&!analysis.sumInRange)valid=false;
+      if(predictOptions.has('noConsec')&&!analysis.noConsec)valid=false;
+      if(predictOptions.has('colorBalance')&&!analysis.colorBalance)valid=false;
+      if(predictOptions.has('endNumBalance')&&!analysis.endNumBalance)valid=false;
+
       if(valid)break;
     }
     
@@ -912,7 +1094,11 @@ function generatePrediction(){
   document.getElementById('predictResults').innerHTML=results.map((nums,i)=>{
     const sum=nums.reduce((a,b)=>a+b,0);
     const odd=nums.filter(n=>n%2===1).length;
-    return '<div class="predict-result"><div class="predict-index">'+(i+1)+'번 <span style="color:var(--text2);font-size:10px">합:'+sum+' 홀:'+odd+'</span></div><div class="balls">'+createBalls(nums,null,'sm')+'</div></div>';
+    const numsStr=nums.join(',');
+    return '<div class="predict-result"><div class="predict-index" style="display:flex;justify-content:space-between;align-items:center">'
+      +'<span>'+(i+1)+'번 <span style="color:var(--text2);font-size:10px">합:'+sum+' 홀:'+odd+'</span></span>'
+      +'<button onclick="addPredictFromResult(\''+numsStr+'\')" style="padding:4px 8px;border:none;border-radius:6px;background:var(--primary);color:#fff;font-size:10px;cursor:pointer">➕ 추가</button>'
+      +'</div><div class="balls">'+createBalls(nums,null,'sm')+'</div></div>';
   }).join('')||'<div class="alert alert-danger">조건에 맞는 조합을 생성할 수 없습니다</div>';
 }
 
@@ -953,6 +1139,506 @@ function exportData(){
   const b=new Blob([JSON.stringify(lottoData,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lotto_data.json';a.click();
 }
+
+// 공통 수집 로직 (최대 5회차까지 새 데이터 수집)
+async function collectNewRounds(onProgress){
+  const currentLatest=lottoData.length?lottoData[0].round:0;
+  let newRound=currentLatest+1;
+  let newData=[];
+  let checked=0;
+
+  while(checked<5){
+    if(onProgress)onProgress(newRound);
+    try{
+      const data=await fetchLottoRound(newRound);
+      if(data){
+        newData.push(data);
+        newRound++;
+        checked++;
+      }else{
+        break;
+      }
+    }catch(e){
+      break;
+    }
+  }
+  return{newData,currentLatest};
+}
+
+// 메인 화면에서 수동 수집 (회차 네비게이션 버튼용)
+async function manualCollectFromMain(){
+  const nextBtn=document.getElementById('nextBtn');
+  nextBtn.disabled=true;
+  nextBtn.textContent='⏳';
+
+  try{
+    const{newData,currentLatest}=await collectNewRounds();
+    if(newData.length>0){
+      refreshAfterCollect(newData);
+      alert('✅ '+newData.length+'개 회차 수집 완료!\\n'+newData.map(d=>d.round+'회').join(', '));
+    }else{
+      alert('ℹ️ 새로운 데이터가 없습니다.\\n(최신: '+currentLatest+'회)');
+    }
+  }catch(e){
+    alert('❌ 수집 실패: '+e.message);
+  }
+
+  nextBtn.disabled=false;
+  nextBtn.textContent='⭕';
+}
+
+// 수동 수집 (설정 탭용)
+async function manualCollect(){
+  const btn=document.getElementById('collectBtn');
+  const status=document.getElementById('collectStatus');
+  btn.disabled=true;
+  btn.textContent='⏳ 수집 중...';
+  status.innerHTML='<span style="color:var(--primary)">동행복권 API 호출 중...</span>';
+
+  try{
+    const{newData,currentLatest}=await collectNewRounds(round=>{
+      status.innerHTML='<span style="color:var(--primary)">'+round+'회차 확인 중...</span>';
+    });
+
+    if(newData.length>0){
+      refreshAfterCollect(newData);
+      status.innerHTML='<span style="color:var(--success)">✅ '+newData.length+'개 회차 수집 완료! ('+newData.map(d=>d.round+'회').join(', ')+')</span>';
+    }else{
+      status.innerHTML='<span style="color:var(--text2)">ℹ️ 새로운 데이터가 없습니다. (최신: '+currentLatest+'회)</span>';
+    }
+  }catch(e){
+    status.innerHTML='<span style="color:var(--danger)">❌ 수집 실패: '+e.message+'</span>';
+  }
+
+  btn.disabled=false;
+  btn.textContent='📡 수동 수집';
+}
+
+// ========== 내 예측 관리 ==========
+function loadMyPredictions(){
+  try{
+    const saved=localStorage.getItem('myLottoPredictions');
+    myPredictions=saved?JSON.parse(saved):[];
+  }catch(e){myPredictions=[];}
+  updatePredictionResults();
+  renderMyPredictions();
+}
+
+function saveMyPredictions(){
+  localStorage.setItem('myLottoPredictions',JSON.stringify(myPredictions));
+}
+
+function updatePredictionResults(){
+  // 대기중인 예측의 결과 확인
+  myPredictions.forEach(p=>{
+    if(p.status==='pending'){
+      const result=lottoData.find(d=>d.round===p.targetRound);
+      if(result){
+        const matched=p.numbers.filter(n=>result.numbers.includes(n));
+        const bonusMatch=p.numbers.includes(result.bonus);
+        p.status='completed';
+        p.result={
+          winNumbers:result.numbers,
+          bonus:result.bonus,
+          matched:matched,
+          matchCount:matched.length,
+          bonusMatch:bonusMatch,
+          rank:getRank(matched.length,bonusMatch),
+          prize:getPrize(matched.length,bonusMatch,result)
+        };
+      }
+    }
+  });
+  saveMyPredictions();
+}
+
+function getRank(matchCount,bonusMatch){
+  if(matchCount===6)return'1등';
+  if(matchCount===5&&bonusMatch)return'2등';
+  if(matchCount===5)return'3등';
+  if(matchCount===4)return'4등';
+  if(matchCount===3)return'5등';
+  return'낙첨';
+}
+
+function getPrize(matchCount,bonusMatch,result){
+  if(matchCount===6)return result.rank1?.prize||0;
+  if(matchCount===5&&bonusMatch)return result.rank2?.prize||0;
+  if(matchCount===5)return result.rank3?.prize||0;
+  if(matchCount===4)return 50000;
+  if(matchCount===3)return 5000;
+  return 0;
+}
+
+function renderMyPredictions(){
+  const pending=myPredictions.filter(p=>p.status==='pending');
+  const completed=myPredictions.filter(p=>p.status==='completed');
+  const wins=completed.filter(p=>p.result?.matchCount>=3);
+
+  // 요약 업데이트
+  document.getElementById('mpTotal').textContent=myPredictions.length;
+  document.getElementById('mpWin').textContent=wins.length;
+  document.getElementById('mpPending').textContent=pending.length;
+
+  // 대기중 렌더링
+  if(pending.length===0){
+    document.getElementById('pendingPredicts').innerHTML='<div style="color:var(--text2);padding:12px;text-align:center">대기중인 예측이 없습니다</div>';
+  }else{
+    document.getElementById('pendingPredicts').innerHTML=pending.map(p=>renderPredictCard(p,true)).join('');
+  }
+
+  // 완료된 렌더링
+  if(completed.length===0){
+    document.getElementById('completedPredicts').innerHTML='<div style="color:var(--text2);padding:12px;text-align:center">완료된 예측이 없습니다</div>';
+  }else{
+    document.getElementById('completedPredicts').innerHTML=completed.sort((a,b)=>b.targetRound-a.targetRound).map(p=>renderPredictCard(p,false)).join('');
+  }
+
+  // 성과 분석 & 번호 선호도 렌더링
+  renderPerformanceAnalysis(completed);
+  renderNumberPreference();
+}
+
+function renderPerformanceAnalysis(completed){
+  const container=document.getElementById('performanceAnalysis');
+  if(completed.length===0){
+    container.innerHTML='<div style="color:var(--text2);font-size:12px;text-align:center;padding:12px">완료된 예측이 없습니다</div>';
+    return;
+  }
+
+  // 등수별 분포
+  const rankDist={1:0,2:0,3:0,4:0,5:0,'낙첨':0};
+  let totalPrize=0;
+  let totalMatched=0;
+
+  completed.forEach(p=>{
+    if(p.result){
+      if(p.result.rank==='1등')rankDist[1]++;
+      else if(p.result.rank==='2등')rankDist[2]++;
+      else if(p.result.rank==='3등')rankDist[3]++;
+      else if(p.result.rank==='4등')rankDist[4]++;
+      else if(p.result.rank==='5등')rankDist[5]++;
+      else rankDist['낙첨']++;
+      totalPrize+=p.result.prize||0;
+      totalMatched+=p.result.matchCount||0;
+    }
+  });
+
+  const avgMatch=(totalMatched/completed.length).toFixed(2);
+  const winRate=((completed.length-rankDist['낙첨'])/completed.length*100).toFixed(1);
+
+  let html='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px">';
+  html+='<div style="text-align:center;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px"><div style="font-size:16px;font-weight:700;color:var(--success)">'+winRate+'%</div><div style="font-size:10px;color:var(--text2)">당첨률</div></div>';
+  html+='<div style="text-align:center;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px"><div style="font-size:16px;font-weight:700;color:var(--primary)">'+avgMatch+'개</div><div style="font-size:10px;color:var(--text2)">평균 일치</div></div>';
+  html+='<div style="text-align:center;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px"><div style="font-size:16px;font-weight:700;color:#b45309">'+formatMoney(totalPrize)+'원</div><div style="font-size:10px;color:var(--text2)">총 당첨금</div></div>';
+  html+='<div style="text-align:center;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px"><div style="font-size:16px;font-weight:700;color:var(--text)">'+completed.length+'회</div><div style="font-size:10px;color:var(--text2)">총 참여</div></div>';
+  html+='</div>';
+
+  // 등수 분포 바 차트
+  html+='<div style="font-size:11px;color:var(--text2);margin-bottom:8px">등수 분포</div>';
+  const maxRank=Math.max(...Object.values(rankDist),1);
+  html+='<div style="display:flex;flex-direction:column;gap:4px">';
+  [['1등','#b45309',rankDist[1]],['2등','#0969da',rankDist[2]],['3등','#218bff',rankDist[3]],['4등','#6e7781',rankDist[4]],['5등','#2da44e',rankDist[5]],['낙첨','#cf222e',rankDist['낙첨']]].forEach(([label,color,cnt])=>{
+    const pct=Math.max(cnt/maxRank*100,0);
+    html+='<div style="display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text)">';
+    html+='<span style="width:35px">'+label+'</span>';
+    html+='<div style="flex:1;height:16px;background:var(--card2);border:1px solid var(--border);border-radius:4px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+color+';border-radius:4px"></div></div>';
+    html+='<span style="width:20px;text-align:right">'+cnt+'</span>';
+    html+='</div>';
+  });
+  html+='</div>';
+
+  container.innerHTML=html;
+}
+
+function renderNumberPreference(){
+  const container=document.getElementById('numberPreference');
+  if(myPredictions.length===0){
+    container.innerHTML='<div style="color:var(--text2);font-size:12px;text-align:center;padding:12px">예측 기록이 없습니다</div>';
+    return;
+  }
+
+  // 번호별 사용 빈도
+  const freq={};
+  for(let i=1;i<=45;i++)freq[i]=0;
+  myPredictions.forEach(p=>{
+    p.numbers.forEach(n=>freq[n]++);
+  });
+
+  // 상위 10개
+  const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+  const top10=sorted.slice(0,10).filter(([n,c])=>c>0);
+  const bottom10=sorted.slice(-10).filter(([n,c])=>c===0||c<sorted[0][1]).reverse().slice(0,5);
+
+  let html='';
+
+  // 자주 사용한 번호
+  if(top10.length>0){
+    html+='<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--text2);margin-bottom:6px">🔥 자주 선택한 번호</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    top10.forEach(([n,c])=>{
+      html+='<div style="display:flex;align-items:center;gap:4px">'+createBall(parseInt(n),'xs')+'<span style="font-size:10px;color:var(--text2)">'+c+'회</span></div>';
+    });
+    html+='</div></div>';
+  }
+
+  // 안 쓴 번호
+  const unused=sorted.filter(([n,c])=>c===0);
+  if(unused.length>0&&unused.length<=20){
+    html+='<div><div style="font-size:11px;color:var(--text2);margin-bottom:6px">❄️ 아직 안 쓴 번호</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:4px">';
+    unused.forEach(([n])=>{
+      html+=createBall(parseInt(n),'xs');
+    });
+    html+='</div></div>';
+  }
+
+  // 색상 분포 (getColorDistribution 활용)
+  html+='<div style="margin-top:12px"><div style="font-size:11px;color:var(--text2);margin-bottom:6px">🎨 색상대 선호도</div>';
+  const colorCnt={'1-10':0,'11-20':0,'21-30':0,'31-40':0,'41-45':0};
+  myPredictions.forEach(p=>{
+    const dist=getColorDistribution(p.numbers);
+    Object.keys(colorCnt).forEach(k=>colorCnt[k]+=dist[k]);
+  });
+  const totalNums=myPredictions.length*6;
+  const colorData=[
+    ['1-10','#f0b400',colorCnt['1-10']],
+    ['11-20','#218bff',colorCnt['11-20']],
+    ['21-30','#fa4549',colorCnt['21-30']],
+    ['31-40','#6e7781',colorCnt['31-40']],
+    ['41-45','#2da44e',colorCnt['41-45']]
+  ];
+  html+='<div style="display:flex;gap:4px;height:20px;border-radius:6px;overflow:hidden">';
+  colorData.forEach(([range,color,cnt])=>{
+    const pct=(cnt/totalNums*100).toFixed(0);
+    if(cnt>0)html+='<div style="flex:'+cnt+';background:'+color+';display:flex;align-items:center;justify-content:center;font-size:9px;color:#000" title="'+range+': '+cnt+'회 ('+pct+'%)">'+pct+'%</div>';
+  });
+  html+='</div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text2);margin-top:4px">';
+  colorData.forEach(([range,color])=>{
+    html+='<span style="color:'+color+'">'+range+'</span>';
+  });
+  html+='</div></div>';
+
+  container.innerHTML=html;
+}
+
+function renderPredictCard(p,isPending){
+  const analysis=analyzeNumbers(p.numbers);
+  let html='<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px">';
+
+  // 헤더
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+  html+='<span style="font-weight:600;font-size:13px;color:var(--text)">'+p.targetRound+'회차</span>';
+  html+='<div style="display:flex;gap:4px">';
+  html+='<button onclick="editPrediction(\''+p.id+'\')" style="padding:4px 8px;border:none;border-radius:4px;background:var(--primary);color:#fff;font-size:10px;cursor:pointer">✏️</button>';
+  html+='<button onclick="deletePrediction(\''+p.id+'\')" style="padding:4px 8px;border:none;border-radius:4px;background:var(--danger);color:#fff;font-size:10px;cursor:pointer">🗑️</button>';
+  html+='</div></div>';
+
+  // 번호
+  html+='<div class="balls" style="margin-bottom:8px">'+createBalls(p.numbers,null,'xs',p.result?.matched||[])+'</div>';
+
+  // 메모
+  if(p.memo)html+='<div style="font-size:10px;color:var(--text2);margin-bottom:8px">📝 '+p.memo+'</div>';
+
+  // 분석 스코어카드
+  html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:8px;font-size:9px">';
+  html+='<div style="text-align:center;padding:4px;background:var(--card2);border:1px solid var(--border);border-radius:4px"><div style="color:'+(analysis.oddEven?'var(--success)':'var(--danger)')+'">홀짝</div><div style="color:var(--text)">'+analysis.oddCount+':'+analysis.evenCount+'</div></div>';
+  html+='<div style="text-align:center;padding:4px;background:var(--card2);border:1px solid var(--border);border-radius:4px"><div style="color:'+(analysis.highLow?'var(--success)':'var(--danger)')+'">고저</div><div style="color:var(--text)">'+analysis.lowCount+':'+(6-analysis.lowCount)+'</div></div>';
+  html+='<div style="text-align:center;padding:4px;background:var(--card2);border:1px solid var(--border);border-radius:4px"><div style="color:'+(analysis.sumInRange?'var(--success)':'var(--danger)')+'">총합</div><div style="color:var(--text)">'+analysis.sum+'</div></div>';
+  html+='<div style="text-align:center;padding:4px;background:var(--card2);border:1px solid var(--border);border-radius:4px"><div style="color:'+(analysis.noConsec?'var(--success)':'var(--danger)')+'">연속</div><div style="color:var(--text)">'+(analysis.hasConsec?'있음':'없음')+'</div></div>';
+  html+='</div>';
+
+  // 결과 (완료된 경우)
+  if(!isPending&&p.result){
+    const isWin=p.result.matchCount>=3;
+    html+='<div style="padding:8px;border-radius:6px;text-align:center;'+
+      (isWin?'background:#f0fdf4;border:1px solid #bbf7d0':'background:#fef2f2;border:1px solid #fecaca')+'">';
+    html+='<div style="font-size:14px;font-weight:700;'+(isWin?'color:var(--success)':'color:var(--danger)')+'">'+p.result.rank+'</div>';
+    html+='<div style="font-size:11px;color:var(--text2)">'+p.result.matchCount+'개 일치'+(p.result.bonusMatch?' + 보너스':'')+'</div>';
+    if(p.result.prize>0)html+='<div style="font-size:12px;color:#b45309;margin-top:4px">'+formatMoney(p.result.prize)+'원</div>';
+    html+='</div>';
+  }else{
+    // 남은 날짜 표시
+    const latestRound=lottoData[0]?.round||0;
+    const remaining=p.targetRound-latestRound;
+    if(remaining>0){
+      html+='<div style="text-align:center;font-size:11px;color:var(--primary)">⏳ 약 '+remaining+'주 후 추첨</div>';
+    }else{
+      html+='<div style="text-align:center;font-size:11px;color:var(--warning)">⏳ 결과 대기중...</div>';
+    }
+  }
+
+  html+='</div>';
+  return html;
+}
+
+// 번호 분석 (간단 버전 - 카드용)
+function analyzeNumbers(numbers){
+  return analyzeNumbersFull(numbers);
+}
+
+// 번호 분석 (전체 버전 - 모든 조건 체크)
+function analyzeNumbersFull(numbers){
+  const sorted=[...numbers].sort((a,b)=>a-b);
+  const sum=sorted.reduce((a,b)=>a+b,0);
+  const oddCount=sorted.filter(n=>n%2===1).length;
+  const evenCount=6-oddCount;
+  const lowCount=sorted.filter(n=>n<=22).length;
+
+  // 연속번호 체크
+  let hasConsec=false;
+  for(let i=0;i<sorted.length-1;i++){
+    if(sorted[i+1]-sorted[i]===1)hasConsec=true;
+  }
+
+  // 색상 분포
+  const colorDist=getColorDistribution(numbers);
+  const maxColorCount=Math.max(...Object.values(colorDist));
+
+  // 끝수 분산
+  const endNums=new Set(numbers.map(n=>n%10));
+  const endNumCount=endNums.size;
+
+  // HOT/COLD 번호 체크
+  let hasHot=false,hasCold=false,hasLongAbsent=false;
+  if(numStats.length>0){
+    const sortedStats=[...numStats].sort((a,b)=>b.count-a.count);
+    const hotNums=sortedStats.slice(0,10).map(s=>s.num);
+    const coldNums=sortedStats.slice(-10).map(s=>s.num);
+    hasHot=numbers.some(n=>hotNums.includes(n));
+    hasCold=numbers.some(n=>coldNums.includes(n));
+
+    // 미출현 번호 (10회 이상)
+    const longAbsentNums=numStats.filter(s=>s.last>=10).map(s=>s.num);
+    hasLongAbsent=numbers.some(n=>longAbsentNums.includes(n));
+  }
+
+  // 최근 트렌드
+  let hasRecentTrend=false;
+  if(lottoData.length>=5){
+    const recentNums=new Set();
+    for(let i=0;i<5;i++){
+      lottoData[i].numbers.forEach(n=>recentNums.add(n));
+    }
+    hasRecentTrend=numbers.some(n=>recentNums.has(n));
+  }
+
+  return{
+    sum,oddCount,evenCount,lowCount,hasConsec,
+    maxColorCount,endNumCount,
+    hasHot,hasCold,hasLongAbsent,hasRecentTrend,
+    // 조건 충족 여부
+    oddEven:oddCount===3,
+    highLow:lowCount===3,
+    sumInRange:sum>=100&&sum<=175,
+    noConsec:!hasConsec,
+    colorBalance:maxColorCount<=2,
+    endNumBalance:endNumCount>=4
+  };
+}
+
+// 예측 추가 (예측 화면에서)
+function addPredictFromResult(numsStr){
+  const nums=numsStr.split(',').map(n=>parseInt(n));
+  const nextRound=(lottoData[0]?.round||0)+1;
+  document.getElementById('predictEditId').value='';
+  document.getElementById('predictRoundInput').value=nextRound;
+  document.getElementById('predictNumbersInput').value=nums.join(', ');
+  document.getElementById('predictMemoInput').value='AI 예측';
+  document.getElementById('predictModalTitle').textContent='예측 추가';
+  document.getElementById('predictModal').classList.add('active');
+}
+
+function openAddPredictModal(){
+  const nextRound=(lottoData[0]?.round||0)+1;
+  document.getElementById('predictEditId').value='';
+  document.getElementById('predictRoundInput').value=nextRound;
+  document.getElementById('predictNumbersInput').value='';
+  document.getElementById('predictMemoInput').value='';
+  document.getElementById('predictModalTitle').textContent='예측 추가';
+  document.getElementById('predictModal').classList.add('active');
+}
+
+function closePredictModal(){
+  document.getElementById('predictModal').classList.remove('active');
+}
+
+function savePrediction(){
+  const editId=document.getElementById('predictEditId').value;
+  const round=parseInt(document.getElementById('predictRoundInput').value);
+  const numsStr=document.getElementById('predictNumbersInput').value;
+  const memo=document.getElementById('predictMemoInput').value.trim();
+
+  // 번호 파싱
+  const nums=numsStr.split(/[,\s]+/).map(n=>parseInt(n.trim())).filter(n=>n>=1&&n<=45);
+  if(nums.length!==6){
+    alert('1~45 사이의 번호 6개를 입력하세요');
+    return;
+  }
+  if(new Set(nums).size!==6){
+    alert('중복된 번호가 있습니다');
+    return;
+  }
+  if(!round||round<1){
+    alert('올바른 회차를 입력하세요');
+    return;
+  }
+
+  const sortedNums=[...nums].sort((a,b)=>a-b);
+
+  if(editId){
+    // 수정
+    const idx=myPredictions.findIndex(p=>p.id===editId);
+    if(idx>=0){
+      myPredictions[idx].targetRound=round;
+      myPredictions[idx].numbers=sortedNums;
+      myPredictions[idx].memo=memo;
+      myPredictions[idx].status='pending';
+      myPredictions[idx].result=null;
+    }
+  }else{
+    // 추가
+    myPredictions.push({
+      id:Date.now().toString(),
+      createdAt:new Date().toISOString(),
+      targetRound:round,
+      numbers:sortedNums,
+      memo:memo,
+      status:'pending',
+      result:null
+    });
+  }
+
+  saveMyPredictions();
+  updatePredictionResults();
+  renderMyPredictions();
+  closePredictModal();
+
+  // 내 예측 탭으로 이동
+  showSection('mypredict',document.querySelector('.nav-item:nth-child(3)'));
+}
+
+function editPrediction(id){
+  const p=myPredictions.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('predictEditId').value=id;
+  document.getElementById('predictRoundInput').value=p.targetRound;
+  document.getElementById('predictNumbersInput').value=p.numbers.join(', ');
+  document.getElementById('predictMemoInput').value=p.memo||'';
+  document.getElementById('predictModalTitle').textContent='예측 수정';
+  document.getElementById('predictModal').classList.add('active');
+}
+
+function deletePrediction(id){
+  if(!confirm('이 예측을 삭제하시겠습니까?'))return;
+  myPredictions=myPredictions.filter(p=>p.id!==id);
+  saveMyPredictions();
+  renderMyPredictions();
+}
+
+// 모달 닫기
+document.getElementById('predictModal').onclick=function(e){if(e.target===this)closePredictModal()};
 
 init();
 </script>
