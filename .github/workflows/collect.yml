@@ -2,8 +2,7 @@ name: 로또 데이터 수집
 
 on:
   schedule:
-    - cron: '0 1 * * 6'   # 토요일 10:00 KST (UTC 01:00)
-    - cron: '0 0 * * 0'   # 일요일 09:00 KST (UTC 00:00)
+    - cron: '0 13 * * 6'   # 토요일 22:00 KST (UTC 13:00)
   workflow_dispatch:
 
 jobs:
