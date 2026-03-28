@@ -33,6 +33,11 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git pull --rebase origin main
           git add backtest_results.json dashboard.html
-          git diff --staged --quiet || git commit -m "🎯 예측 업데이트 $(date +'%Y-%m-%d')"
-          git push
+          if git diff --staged --quiet; then
+            echo "변경사항 없음"
+          else
+            git commit -m "🎯 예측 업데이트 $(date +'%Y-%m-%d')"
+            git push origin main
+          fi
