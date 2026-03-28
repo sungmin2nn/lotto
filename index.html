@@ -337,13 +337,13 @@
       <div id="winRandomResult" style="margin-top:12px"></div>
     </div>
 
-    <!-- 축소 시스템 -->
+    <!-- 축소 시스템 (4등 최적화) -->
     <div class="card">
-      <div class="card-title">🎯 축소 시스템 <span class="help-icon tooltip">?<span class="tooltip-text">N개 번호 선택 → 가능한 6개 조합 생성<br>예: 8개 선택 → 28개 조합</span></span></div>
+      <div class="card-title">🎯 4등 보장 축소 시스템 <span class="help-icon tooltip">?<span class="tooltip-text">N개 번호 중 4개가 당첨번호에 포함되면<br>4등(5만원) 이상 보장하는 최소 조합</span></span></div>
       <div class="accordion" id="wheelAccordion">
         <div class="accordion-header" onclick="toggleAccordion('wheelAccordion')">
           <div>
-            <span>번호 선택</span>
+            <span>번호 선택 (7~12개)</span>
             <span id="wheelDisplay" style="margin-left:8px;color:var(--primary)"></span>
           </div>
           <span class="accordion-icon">▼</span>
@@ -354,7 +354,22 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-outline" onclick="generateWheel()">조합 생성</button>
+      <div style="margin:12px 0;padding:12px;background:var(--card2);border-radius:8px">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+            <input type="radio" name="wheelMode" value="guarantee4" checked onchange="updateWheelMode()">
+            <span>🎯 <b>4등 보장</b> (최소 조합)</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+            <input type="radio" name="wheelMode" value="full" onchange="updateWheelMode()">
+            <span>📦 전체 조합</span>
+          </label>
+        </div>
+        <div id="wheelModeInfo" style="margin-top:8px;font-size:11px;color:var(--text2)">
+          선택한 번호 중 4개가 당첨번호에 포함되면 4등 이상 보장
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="generateWheel()">🎰 조합 생성</button>
       <div id="wheelResults" style="margin-top:12px"></div>
     </div>
   </div>
@@ -794,7 +809,7 @@ function toggleGridNumber(gid,num,btn){
     updateRequireDisplay();
   }else if(gid==='wheelGrid'){
     if(wheelNumbers.has(num)){wheelNumbers.delete(num);btn.classList.remove('selected')}
-    else if(wheelNumbers.size<15){wheelNumbers.add(num);btn.classList.add('selected')}
+    else if(wheelNumbers.size<12){wheelNumbers.add(num);btn.classList.add('selected')}
     updateWheelDisplay();
   }
 }
@@ -1486,31 +1501,127 @@ function randomFromWinNumbers(mode){
   document.getElementById('winRandomResult').innerHTML=html;
 }
 
-// 축소 시스템
-function generateWheel(){
-  if(wheelNumbers.size<6){
-    document.getElementById('wheelResults').innerHTML='<div class="alert alert-danger">최소 6개 번호를 선택하세요</div>';
-    return;
+// 축소 시스템 모드 업데이트
+function updateWheelMode(){
+  const mode=document.querySelector('input[name="wheelMode"]:checked').value;
+  const info=document.getElementById('wheelModeInfo');
+  if(mode==='guarantee4'){
+    info.innerHTML='선택한 번호 중 <b style="color:var(--primary)">4개가 당첨번호에 포함</b>되면 4등 이상 보장';
+  }else{
+    info.innerHTML='선택한 번호로 가능한 <b>모든 6개 조합</b> 생성 (비용 높음)';
   }
-  if(wheelNumbers.size>12){
-    document.getElementById('wheelResults').innerHTML='<div class="alert alert-danger">최대 12개까지 선택 가능합니다 (조합 수 제한)</div>';
-    return;
-  }
-  
-  const nums=[...wheelNumbers].sort((a,b)=>a-b);
-  const combos=[];
-  
+}
+
+// 조합 생성 유틸리티
+function getCombinations(arr,r){
+  const result=[];
   function combine(start,combo){
-    if(combo.length===6){combos.push([...combo]);return}
-    for(let i=start;i<nums.length;i++){
-      combo.push(nums[i]);
+    if(combo.length===r){result.push([...combo]);return}
+    for(let i=start;i<arr.length;i++){
+      combo.push(arr[i]);
       combine(i+1,combo);
       combo.pop();
     }
   }
   combine(0,[]);
-  
-  document.getElementById('wheelResults').innerHTML='<div class="wheel-info">총 '+combos.length+'개 조합</div><div class="wheel-result">'+combos.slice(0,50).map((c,i)=>'<div class="wheel-item">'+(i+1)+'. '+c.join(', ')+'</div>').join('')+(combos.length>50?'<div class="wheel-item" style="color:var(--text2)">... 외 '+(combos.length-50)+'개</div>':'')+'</div>';
+  return result;
+}
+
+// 4등 보장 축소 휠 (Greedy Set Cover)
+function generateAbbreviatedWheel(nums,guarantee=4){
+  // 1. 커버해야 할 모든 guarantee-조합 생성
+  const targetCombos=getCombinations(nums,guarantee);
+  const uncovered=new Set(targetCombos.map(c=>c.join(',')));
+
+  // 2. 가능한 모든 6-조합 생성
+  const allSixCombos=getCombinations(nums,6);
+
+  // 3. 각 6-조합이 커버하는 guarantee-조합 미리 계산
+  const coverageMap=new Map();
+  allSixCombos.forEach(six=>{
+    const covers=getCombinations(six,guarantee).map(c=>c.join(','));
+    coverageMap.set(six.join(','),covers);
+  });
+
+  // 4. Greedy: 가장 많은 미커버 조합을 커버하는 6-조합 선택
+  const selected=[];
+  while(uncovered.size>0){
+    let bestCombo=null,bestCount=0;
+    for(const[sixKey,covers]of coverageMap){
+      const count=covers.filter(c=>uncovered.has(c)).length;
+      if(count>bestCount){bestCount=count;bestCombo=sixKey}
+    }
+    if(bestCombo===null||bestCount===0)break;
+    selected.push(bestCombo.split(',').map(Number));
+    coverageMap.get(bestCombo).forEach(c=>uncovered.delete(c));
+    coverageMap.delete(bestCombo);
+  }
+  return selected;
+}
+
+// 축소 시스템 메인
+function generateWheel(){
+  if(wheelNumbers.size<7){
+    document.getElementById('wheelResults').innerHTML='<div class="alert alert-danger">최소 7개 번호를 선택하세요 (4등 보장 최소 조건)</div>';
+    return;
+  }
+  if(wheelNumbers.size>12){
+    document.getElementById('wheelResults').innerHTML='<div class="alert alert-danger">최대 12개까지 선택 가능합니다</div>';
+    return;
+  }
+
+  const nums=[...wheelNumbers].sort((a,b)=>a-b);
+  const mode=document.querySelector('input[name="wheelMode"]:checked').value;
+
+  let combos=[];
+  let modeLabel='';
+
+  if(mode==='guarantee4'){
+    // 4등 보장 축소 휠
+    combos=generateAbbreviatedWheel(nums,4);
+    modeLabel='🎯 4등 보장';
+  }else{
+    // 전체 조합
+    combos=getCombinations(nums,6);
+    modeLabel='📦 전체 조합';
+  }
+
+  const fullCount=getCombinations(nums,6).length;
+  const cost=combos.length*1000;
+  const savings=mode==='guarantee4'?Math.round((1-combos.length/fullCount)*100):0;
+
+  let html='<div style="background:var(--card2);padding:12px;border-radius:8px;margin-bottom:12px">';
+  html+='<div style="font-size:14px;font-weight:600;margin-bottom:8px">'+modeLabel+'</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">';
+  html+='<div>선택 번호: <b>'+nums.length+'개</b></div>';
+  html+='<div>생성 조합: <b style="color:var(--primary)">'+combos.length+'개</b></div>';
+  html+='<div>예상 비용: <b>'+cost.toLocaleString()+'원</b></div>';
+  if(mode==='guarantee4'){
+    html+='<div>절감률: <b style="color:var(--success)">'+savings+'%</b> (vs 전체 '+fullCount+'개)</div>';
+  }else{
+    html+='<div>전체 조합 수: '+fullCount+'개</div>';
+  }
+  html+='</div>';
+  if(mode==='guarantee4'){
+    html+='<div style="margin-top:10px;padding:8px;background:var(--success);color:#fff;border-radius:6px;font-size:11px;text-align:center">';
+    html+='✅ 선택한 '+nums.length+'개 번호 중 4개가 당첨번호에 포함되면 4등 이상 보장!</div>';
+  }
+  html+='</div>';
+
+  // 조합 목록
+  html+='<div class="wheel-result" style="max-height:300px">';
+  combos.forEach((c,i)=>{
+    const sum=c.reduce((a,b)=>a+b,0);
+    const odd=c.filter(n=>n%2===1).length;
+    const numsStr=c.join(',');
+    html+='<div class="wheel-item" style="display:flex;justify-content:space-between;align-items:center">';
+    html+='<span>'+(i+1)+'. '+c.join(', ')+' <span style="color:var(--text2);font-size:10px">(합:'+sum+' 홀:'+odd+')</span></span>';
+    html+='<button onclick="addPredictFromResult(\''+numsStr+'\')" style="padding:2px 6px;border:none;border-radius:4px;background:var(--primary);color:#fff;font-size:10px;cursor:pointer">추가</button>';
+    html+='</div>';
+  });
+  html+='</div>';
+
+  document.getElementById('wheelResults').innerHTML=html;
 }
 
 // 설정
