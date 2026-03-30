@@ -524,10 +524,34 @@ class BacktestEngine:
 
     def save_results(self, output_path: str):
         """결과 저장"""
+        # 다음 회차 예측 생성
+        latest_round = max(h['round'] for h in self.history)
+        next_round = latest_round + 1
+        predictions = self.predict_next(next_round)
+
+        # 통계 기반 상위 5개 전략 예측
+        stats = self.get_statistics()
+        sorted_stats = sorted(stats.items(), key=lambda x: x[1]['4등이상율'], reverse=True)[:5]
+        top_predictions = []
+        for name, s in sorted_stats:
+            if name in predictions:
+                top_predictions.append({
+                    'rank': len(top_predictions) + 1,
+                    'strategy': name,
+                    'numbers': predictions[name]['numbers'],
+                    'description': predictions[name]['description'],
+                    'rate_4plus': s['4등이상율'],
+                    'count_4plus': s['4등이상'],
+                    'avg_match': s['avg_match']
+                })
+
         output = {
             'generated_at': datetime.now().isoformat(),
+            'next_round': next_round,
             'strategies': [{'name': s.name, 'description': s.description} for s in self.strategies],
             'statistics': self.get_statistics(),
+            'predictions': top_predictions,
+            'all_predictions': {name: pred['numbers'] for name, pred in predictions.items()},
             'results': {str(k): v for k, v in self.results.items()},
             'evolution_log': self.evolution_log
         }
