@@ -626,6 +626,14 @@
     <div class="card">
       <p style="font-size:11px;color:var(--text2);line-height:1.6">⚠️ 로또는 완전한 무작위 추첨입니다. 모든 통계와 예측은 참고용이며 당첨을 보장하지 않습니다.</p>
     </div>
+    <div class="card" style="text-align:center">
+      <div class="card-title" style="justify-content:center">🔧 버전 정보</div>
+      <div style="font-size:12px;color:var(--text2)">
+        <div>희망회로 [설렘] v1.2.0</div>
+        <div style="margin-top:4px">수정일: 2026-03-30</div>
+        <div id="backtestVersion" style="margin-top:4px"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -749,6 +757,10 @@ function renderStrategyPredictions(){
 
   container.innerHTML=html;
   info.textContent=backtestData.next_round+'회 예측 | '+backtestData.generated_at.slice(0,10)+' 생성';
+
+  // 설정 페이지 백테스트 버전 표시
+  const btVer=document.getElementById('backtestVersion');
+  if(btVer) btVer.textContent='백테스트: '+backtestData.generated_at.slice(0,10);
 }
 
 // 전략 추천 번호를 내 예측에 추가
