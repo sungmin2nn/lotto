@@ -232,8 +232,15 @@
         <div class="info-row"><span>5등</span><span>3개 번호 일치 (고정 5천원)</span></div>
       </div>
     </div>
+
+    <!-- 전략 기반 추천 번호 -->
+    <div class="card" id="strategyCard" style="display:none">
+      <div class="card-title">🧬 전략 기반 추천 번호 <span class="help-icon tooltip">?<span class="tooltip-text">1208회 백테스팅 결과<br>4등+ 달성률 상위 전략</span></span></div>
+      <div id="strategyPredictions"></div>
+      <div style="font-size:10px;color:var(--text2);margin-top:8px;text-align:right" id="strategyInfo"></div>
+    </div>
   </div>
-  
+
   <!-- 예측 -->
   <div id="sec-predict" class="section">
     <div class="card">
@@ -677,6 +684,7 @@ let completedPage=1, completedPerPage=10; // 완료 페이징
 let completedFiltered=[]; // 필터링된 완료 목록
 let statStartRound=1, statEndRound=9999; // 통계 기간 설정
 let freqRecommendNums=[]; // 빈도 기반 추천 번호
+let backtestData=null; // 백테스팅 결과
 
 // 초기화
 async function init(){
@@ -695,9 +703,64 @@ async function init(){
     updateDataStatus();
     initPairSelect();
     loadMyPredictions();
+    loadBacktestResults();
   }catch(e){
     document.getElementById('loading').innerHTML='<p style="color:var(--danger)">❌ '+e.message+'</p><button class="btn btn-primary" style="margin-top:16px" onclick="location.reload()">다시 시도</button>';
   }
+}
+
+// 백테스팅 결과 로드
+async function loadBacktestResults(){
+  try{
+    const res=await fetch('backtest_results.json');
+    if(!res.ok)return;
+    backtestData=await res.json();
+    renderStrategyPredictions();
+  }catch(e){
+    console.log('백테스팅 결과 없음');
+  }
+}
+
+// 전략 기반 추천 번호 렌더링
+function renderStrategyPredictions(){
+  if(!backtestData||!backtestData.predictions||backtestData.predictions.length===0)return;
+
+  const card=document.getElementById('strategyCard');
+  const container=document.getElementById('strategyPredictions');
+  const info=document.getElementById('strategyInfo');
+
+  card.style.display='block';
+
+  let html='';
+  backtestData.predictions.forEach((p,i)=>{
+    const numsStr=p.numbers.join(',');
+    html+='<div style="background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+    html+='<span style="font-size:12px;font-weight:700;color:var(--primary)">'+(i+1)+'. '+p.strategy+'</span>';
+    html+='<span style="font-size:10px;color:var(--success)">4등+: '+p.rate_4plus+'%</span>';
+    html+='</div>';
+    html+='<div class="balls" style="margin-bottom:8px">'+createBalls(p.numbers,null,'sm')+'</div>';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center">';
+    html+='<span style="font-size:10px;color:var(--text2)">'+p.description+'</span>';
+    html+='<button onclick="addStrategyToPredict(\''+numsStr+'\',\''+p.strategy+'\')" style="padding:4px 8px;border:none;border-radius:6px;background:var(--primary);color:#fff;font-size:10px;cursor:pointer">➕ 추가</button>';
+    html+='</div>';
+    html+='</div>';
+  });
+
+  container.innerHTML=html;
+  info.textContent=backtestData.next_round+'회 예측 | '+backtestData.generated_at.slice(0,10)+' 생성';
+}
+
+// 전략 추천 번호를 내 예측에 추가
+function addStrategyToPredict(numsStr,strategy){
+  const nums=numsStr.split(',').map(n=>parseInt(n));
+  const nextRound=backtestData?.next_round||(lottoData[0]?.round||0)+1;
+  document.getElementById('predictEditId').value='';
+  document.getElementById('predictRoundInput').value=nextRound;
+  document.getElementById('predictNumbersInput').value=nums.join(', ');
+  document.getElementById('predictMemoInput').value='전략: '+strategy;
+  document.getElementById('predictModalTitle').textContent='예측 추가';
+  document.getElementById('predictModal').classList.add('active');
 }
 
 // 유틸리티
